@@ -27,6 +27,9 @@ public class ScheduleElement {
         this.isAvailable = isAvailable;
     }
 
+    public ScheduleElement() {
+    }
+
     public String getSubject() {
         return subject;
     }
