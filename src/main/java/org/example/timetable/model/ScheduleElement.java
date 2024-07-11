@@ -14,7 +14,6 @@ public class ScheduleElement {
     String room;
     Boolean isAvailable;
     // TODO: compare by day
-
     public long getDuration(){
         return MINUTES.between(start, end);
     }
