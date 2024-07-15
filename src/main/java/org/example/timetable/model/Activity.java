@@ -5,7 +5,7 @@ import java.time.LocalTime;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 
-public class ScheduleElement {
+public class Activity {
     String subject;
     int type; // 0 - lecture, 1 - practice -> could be enum
     DayOfWeek day;
@@ -17,7 +17,7 @@ public class ScheduleElement {
     public long getDuration(){
         return MINUTES.between(start, end);
     }
-    public ScheduleElement(String subject, int type, DayOfWeek day, LocalTime start, LocalTime end, String room, Boolean isAvailable) {
+    public Activity(String subject, int type, DayOfWeek day, LocalTime start, LocalTime end, String room, Boolean isAvailable) {
         this.subject = subject;
         this.type = type;
         this.day = day;
@@ -27,7 +27,7 @@ public class ScheduleElement {
         this.isAvailable = isAvailable;
     }
 
-    public ScheduleElement() {
+    public Activity() {
     }
 
     public String getSubject() {

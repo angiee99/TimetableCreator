@@ -2,7 +2,7 @@ package org.example.timetable.service.implementation;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import org.example.timetable.model.ScheduleElement;
+import org.example.timetable.model.Activity;
 import org.example.timetable.service.InputReaderService;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +17,8 @@ import java.util.List;
 public class CsvInputReaderService implements InputReaderService {
 
     @Override
-    public List<ScheduleElement> read(String path) {
-        List<ScheduleElement> elements = new ArrayList<>();
+    public List<Activity> read(String path) {
+        List<Activity> activities = new ArrayList<>();
         try (CSVReader csvReader = new CSVReader(new FileReader(path))) {
 
             String[] nextRecord;
@@ -32,7 +32,7 @@ public class CsvInputReaderService implements InputReaderService {
                     System.out.print(cell + "\t");
                 }
 
-                elements.add(stringToScheduleElement(tempElement));
+                activities.add(stringToActivity(tempElement));
                 tempElement.clear();
                 System.out.println();
             }
@@ -41,24 +41,24 @@ public class CsvInputReaderService implements InputReaderService {
             e.printStackTrace();
         }
 
-        return elements;
+        return activities;
     }
 
     // TODO: add good error messages about what is wrong in input file
-    private ScheduleElement stringToScheduleElement(List<String> tempElement) {
-        if(tempElement.size() == ScheduleElement.class.getDeclaredFields().length){
-            ScheduleElement element = new ScheduleElement();
+    private Activity stringToActivity(List<String> tempElement) {
+        if(tempElement.size() == Activity.class.getDeclaredFields().length){
+            Activity activity = new Activity();
 
-            element.setSubject(tempElement.get(0));
-            element.setType(Integer.parseInt(tempElement.get(1)));
-            element.setDay(DayOfWeek.valueOf(tempElement.get(2).toUpperCase()));
-            element.setStart(LocalTime.parse(tempElement.get(3)));
-            element.setEnd(LocalTime.parse(tempElement.get(4)));
-            element.setRoom(tempElement.get(5));
-            element.setAvailable(Boolean.parseBoolean(tempElement.get(6)));
+            activity.setSubject(tempElement.get(0));
+            activity.setType(Integer.parseInt(tempElement.get(1)));
+            activity.setDay(DayOfWeek.valueOf(tempElement.get(2).toUpperCase()));
+            activity.setStart(LocalTime.parse(tempElement.get(3)));
+            activity.setEnd(LocalTime.parse(tempElement.get(4)));
+            activity.setRoom(tempElement.get(5));
+            activity.setAvailable(Boolean.parseBoolean(tempElement.get(6)));
 
-            return element;
+            return activity;
         }
-        else return new ScheduleElement();
+        else return new Activity();
     }
 }

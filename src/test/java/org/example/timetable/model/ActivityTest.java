@@ -7,10 +7,10 @@ import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ScheduleElementTest {
+public class ActivityTest {
     @Test
     void testGetDuration(){
-        ScheduleElement element = new ScheduleElement("dkfj",1, DayOfWeek.MONDAY,
+        Activity element = new Activity("dkfj",1, DayOfWeek.MONDAY,
                 LocalTime.now(), LocalTime.now().plusHours(2L).plusMinutes(15),
                 "jdf", true);
 
