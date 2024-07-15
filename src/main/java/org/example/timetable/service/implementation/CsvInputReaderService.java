@@ -48,7 +48,7 @@ public class CsvInputReaderService implements InputReaderService {
 
     // TODO: add good error messages about what is wrong in input file
     private Activity stringToActivity(List<String> tempElement) {
-        if(tempElement.size() == Activity.class.getDeclaredFields().length){
+        if(tempElement.size() == 7){ // change the check
             Activity activity = new Activity();
 
             ActivityType type = new ActivityType(tempElement.get(0), Integer.parseInt(tempElement.get(1)));
