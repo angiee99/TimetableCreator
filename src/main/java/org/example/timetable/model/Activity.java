@@ -1,29 +1,23 @@
 package org.example.timetable.model;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-
-import static java.time.temporal.ChronoUnit.MINUTES;
 
 public class Activity {
     ActivityType activityType;
-    DayOfWeek day;
-    LocalTime start;
-    LocalTime end;
+    Timeslot timeslot;
     String room;
     Boolean isAvailable;
-    // TODO: compare by day
+
     public long getDuration(){
-        return MINUTES.between(start, end);
+        return timeslot.getDuration();
     }
 
-    public Activity(ActivityType activityType, DayOfWeek day, LocalTime start, LocalTime end, String room, Boolean isAvailable) {
+    public Activity(ActivityType activityType, Timeslot timeslot, String room, Boolean isAvailable) {
         this.activityType = activityType;
-        this.day = day;
-        this.start = start;
-        this.end = end;
+        this.timeslot = timeslot;
         this.room = room;
         this.isAvailable = isAvailable;
+    }
+    public Activity() {
     }
 
     public ActivityType getActivityType() {
@@ -34,33 +28,12 @@ public class Activity {
         this.activityType = activityType;
     }
 
-    public Activity() {
+    public Timeslot getTimeslot() {
+        return timeslot;
     }
 
-
-
-    public DayOfWeek getDay() {
-        return day;
-    }
-
-    public void setDay(DayOfWeek day) {
-        this.day = day;
-    }
-
-    public LocalTime getStart() {
-        return start;
-    }
-
-    public void setStart(LocalTime start) {
-        this.start = start;
-    }
-
-    public LocalTime getEnd() {
-        return end;
-    }
-
-    public void setEnd(LocalTime end) {
-        this.end = end;
+    public void setTimeslot(Timeslot timeslot) {
+        this.timeslot = timeslot;
     }
 
     public String getRoom() {
