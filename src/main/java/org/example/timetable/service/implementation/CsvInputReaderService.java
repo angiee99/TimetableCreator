@@ -3,6 +3,7 @@ package org.example.timetable.service.implementation;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.example.timetable.model.Activity;
+import org.example.timetable.model.ActivityType;
 import org.example.timetable.service.InputReaderService;
 import org.springframework.stereotype.Service;
 
@@ -48,9 +49,9 @@ public class CsvInputReaderService implements InputReaderService {
     private Activity stringToActivity(List<String> tempElement) {
         if(tempElement.size() == Activity.class.getDeclaredFields().length){
             Activity activity = new Activity();
+            ActivityType type = new ActivityType(tempElement.get(0), Integer.parseInt(tempElement.get(1)));
 
-            activity.setSubject(tempElement.get(0));
-            activity.setType(Integer.parseInt(tempElement.get(1)));
+            activity.setActivityType(type);
             activity.setDay(DayOfWeek.valueOf(tempElement.get(2).toUpperCase()));
             activity.setStart(LocalTime.parse(tempElement.get(3)));
             activity.setEnd(LocalTime.parse(tempElement.get(4)));

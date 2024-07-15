@@ -6,8 +6,7 @@ import java.time.LocalTime;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 public class Activity {
-    String subject;
-    int type; // 0 - lecture, 1 - practice -> could be enum
+    ActivityType activityType;
     DayOfWeek day;
     LocalTime start;
     LocalTime end;
@@ -17,9 +16,9 @@ public class Activity {
     public long getDuration(){
         return MINUTES.between(start, end);
     }
-    public Activity(String subject, int type, DayOfWeek day, LocalTime start, LocalTime end, String room, Boolean isAvailable) {
-        this.subject = subject;
-        this.type = type;
+
+    public Activity(ActivityType activityType, DayOfWeek day, LocalTime start, LocalTime end, String room, Boolean isAvailable) {
+        this.activityType = activityType;
         this.day = day;
         this.start = start;
         this.end = end;
@@ -27,24 +26,18 @@ public class Activity {
         this.isAvailable = isAvailable;
     }
 
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+    }
+
     public Activity() {
     }
 
-    public String getSubject() {
-        return subject;
-    }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
 
     public DayOfWeek getDay() {
         return day;
