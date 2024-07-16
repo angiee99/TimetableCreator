@@ -6,5 +6,5 @@ import org.example.timetable.model.Individual;
 import java.util.List;
 
 public interface PopulationGenerationService {
-    List<Individual> generate(List<Activity> activities);
+    List<Individual> generate(List<Activity> activities, int populationSize);
 }

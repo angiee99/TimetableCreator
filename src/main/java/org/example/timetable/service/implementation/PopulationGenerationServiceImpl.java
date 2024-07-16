@@ -16,14 +16,13 @@ import java.util.Set;
 
 @Service
 public class PopulationGenerationServiceImpl implements PopulationGenerationService {
-    int POPULATION_SIZE = 50;
     GeneGenerationService geneGenerator;
     @Override
-    public List<Individual> generate(List<Activity> activities) {
+    public List<Individual> generate(List<Activity> activities, int populationSize) {
         Set<ActivityType> allActivityTypes = getAllUniqueActivityTypes(activities);
 
         List<Individual> individuals = new ArrayList<>();
-        for (int i = 0; i < POPULATION_SIZE; i++) {
+        for (int i = 0; i < populationSize; i++) {
             Individual chromosome = new Individual();
 
             for(ActivityType type: allActivityTypes){
@@ -43,10 +42,6 @@ public class PopulationGenerationServiceImpl implements PopulationGenerationServ
             activityTypes.add(activity.getActivityType());
         }
         return  activityTypes;
-    }
-
-    public int getPopulationSize() {
-        return POPULATION_SIZE;
     }
 
     public GeneGenerationService getGeneGenerator() {

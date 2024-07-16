@@ -21,7 +21,7 @@ public class CsvInputReaderServiceTest {
                 .read("/Users/angelina/Documents/BachelorsWork/stage0/DemoInputSchedule.csv");
 
 
-        generationService.generate(list);
+        generationService.generate(list, 10);
 
         assertEquals(10, list.size());
     }

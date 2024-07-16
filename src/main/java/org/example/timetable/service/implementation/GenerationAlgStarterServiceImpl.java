@@ -13,6 +13,7 @@ import java.util.List;
 public class GenerationAlgStarterServiceImpl implements GenerationAlgStarterService {
     private PopulationGenerationService populationGenerator;
     private final int GENERATION_COUNT = 100;
+    private final int POPULATION_SIZE = 50;
     @Autowired
     public void setPopulationGenerator(PopulationGenerationService populationGenerator) {
         this.populationGenerator = populationGenerator;
@@ -20,7 +21,7 @@ public class GenerationAlgStarterServiceImpl implements GenerationAlgStarterServ
 
     @Override
     public List<Activity> createSchedule(List<Activity> activities) {
-        List<Individual> population = populationGenerator.generate(activities);
+        List<Individual> population = populationGenerator.generate(activities, POPULATION_SIZE);
         for (int i = 0; i < GENERATION_COUNT; i++) {
             //TODO:
             // selection (need of a fitness function for that),
