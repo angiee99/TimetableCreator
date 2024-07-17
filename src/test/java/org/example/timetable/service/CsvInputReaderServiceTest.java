@@ -14,6 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CsvInputReaderServiceTest {
     @Autowired
     PopulationGenerationService generationService;
+
+    @Autowired
+    GeneticAlgStarterService geneticAlgStarterService;
     @Test
     void test(){
         CsvInputReaderService readerService = new CsvInputReaderService();
@@ -21,7 +24,8 @@ public class CsvInputReaderServiceTest {
                 .read("/Users/angelina/Documents/BachelorsWork/stage0/DemoInputSchedule.csv");
 
 
-        generationService.generate(list, 10);
+//        generationService.generate(list, 10);
+        geneticAlgStarterService.createSchedule(list);
 
         assertEquals(10, list.size());
     }

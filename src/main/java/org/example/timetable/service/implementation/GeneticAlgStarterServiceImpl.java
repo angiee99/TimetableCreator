@@ -4,6 +4,7 @@ import org.example.timetable.model.Activity;
 import org.example.timetable.model.Individual;
 import org.example.timetable.service.GeneticAlgStarterService;
 import org.example.timetable.service.PopulationGenerationService;
+import org.example.timetable.service.SelectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,16 @@ import java.util.List;
 @Service
 public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
     private PopulationGenerationService populationGenerator;
+    private SelectionService selectionService;
     private final int GENERATION_COUNT = 100;
     private final int POPULATION_SIZE = 50;
     @Autowired
     public void setPopulationGenerator(PopulationGenerationService populationGenerator) {
         this.populationGenerator = populationGenerator;
+    }
+    @Autowired
+    public void setSelectionService(SelectionService selectionService) {
+        this.selectionService = selectionService;
     }
 
     @Override
@@ -27,6 +33,7 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
             // selection (need of a fitness function for that),
             // crossover
             // mutation
+            List<Individual> selectedPopulation = selectionService.select(population);
 
             // break if the fitness target was met
         }
