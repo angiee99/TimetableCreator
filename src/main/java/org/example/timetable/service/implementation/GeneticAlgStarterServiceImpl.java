@@ -2,6 +2,7 @@ package org.example.timetable.service.implementation;
 
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.Individual;
+import org.example.timetable.service.CrossoverService;
 import org.example.timetable.service.GeneticAlgStarterService;
 import org.example.timetable.service.PopulationGenerationService;
 import org.example.timetable.service.SelectionService;
@@ -15,6 +16,7 @@ import java.util.List;
 public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
     private PopulationGenerationService populationGenerator;
     private SelectionService selectionService;
+    private CrossoverService crossoverService;
     private final int GENERATION_COUNT = 50; // 100-200
     private final int POPULATION_SIZE = 10; // 50
     @Autowired
@@ -24,6 +26,10 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
     @Autowired
     public void setSelectionService(SelectionService selectionService) {
         this.selectionService = selectionService;
+    }
+    @Autowired
+    public void setCrossoverService(CrossoverService crossoverService) {
+        this.crossoverService = crossoverService;
     }
 
     @Override
@@ -41,6 +47,7 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
             //TODO:
             // crossover
             // mutation
+            List<Individual> populationWithOffsprings = crossoverService.crossover(selectedPopulation, POPULATION_SIZE);
         }
         return null;
     }
