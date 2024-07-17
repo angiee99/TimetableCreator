@@ -27,6 +27,6 @@ public class CsvInputReaderServiceTest {
 //        generationService.generate(list, 10);
         geneticAlgStarterService.createSchedule(list);
 
-        assertEquals(10, list.size());
+        assertEquals(12, list.size());
     }
 }

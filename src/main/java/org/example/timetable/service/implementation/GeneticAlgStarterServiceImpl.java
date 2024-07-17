@@ -8,14 +8,15 @@ import org.example.timetable.service.SelectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
     private PopulationGenerationService populationGenerator;
     private SelectionService selectionService;
-    private final int GENERATION_COUNT = 100;
-    private final int POPULATION_SIZE = 50;
+    private final int GENERATION_COUNT = 50; // 100-200
+    private final int POPULATION_SIZE = 10; // 50
     @Autowired
     public void setPopulationGenerator(PopulationGenerationService populationGenerator) {
         this.populationGenerator = populationGenerator;
@@ -29,13 +30,17 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
     public List<Activity> createSchedule(List<Activity> activities) {
         List<Individual> population = populationGenerator.generate(activities, POPULATION_SIZE);
         for (int i = 0; i < GENERATION_COUNT; i++) {
+
+            List<Individual> selectedPopulation = selectionService.select(population);// selection
+
+            if(selectedPopulation.isEmpty()){ // no solution found
+                return new ArrayList<>();
+            }
+            //TODO: break if the fitness target was met -> set the target, calculate the fitness of whole population
+
             //TODO:
-            // selection (need of a fitness function for that),
             // crossover
             // mutation
-            List<Individual> selectedPopulation = selectionService.select(population);
-
-            // break if the fitness target was met
         }
         return null;
     }

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static java.time.temporal.ChronoUnit.MINUTES;
+
 @Service
 public class SelectionServiceImpl implements SelectionService {
 
@@ -23,7 +25,7 @@ public class SelectionServiceImpl implements SelectionService {
                 selectedIndividuals.add(individual);
             }
         }
-        // if too much left ->  add filter fitnessValue < 6
+        // if too much left ->  add filter fitnessValue < 6(to minutes) hours of individual
         return selectedIndividuals;
     }
 
@@ -32,28 +34,39 @@ public class SelectionServiceImpl implements SelectionService {
     @Override
     public int fitness(Individual individual) {
         int fitness = 0;
-        long sum = 0;
-        int timespan = 0;
-        // for each day of week
+
+        // for each day:
+        // sort by time
+        // sum up the duration of all
+        // get the timespan (last end - first start)
+        // calculate value: timespan - sum
+        // if < 0 break and return the value
+        // else fitness += value
         for(int i =1; i <= 7; i++ ){
             // get the activities at that day
             List<Gene> activitiesByDay = getActivitiesByDay(individual, i);
-            // sort by time
-            activitiesByDay = activitiesByDay.stream().sorted
-                    (Comparator.comparing(o -> o.getActivity().getTimeslot().getStart())).toList();
-            // sum up the duration of all
-            sum = activitiesByDay.stream().mapToLong(a -> a.getActivity().getDuration()).sum();
-            // get the timespan (last end - first start)
+            if(activitiesByDay.isEmpty()) continue;
 
+            // sort by time
+            List<Gene> activitiesByDaySorted = activitiesByDay.stream().sorted
+                    (Comparator.comparing(o -> o.getActivity().getTimeslot().getStart())).toList();
+
+            // sum up the duration of all
+            long sum = activitiesByDaySorted.stream().mapToLong(a -> a.getActivity().getDuration()).sum();
+
+            // get the timespan (last end - first start)
+            long timespan =  MINUTES.between(activitiesByDaySorted.get(0).getActivity().getTimeslot().getStart(),
+                    activitiesByDaySorted.get(activitiesByDaySorted.size()-1).getActivity().getTimeslot().getEnd());
+
+            int fitnessIndividual = (int) (timespan - sum);
+
+            if(fitnessIndividual < 0) { // this individual has the overlap
+                fitness = fitnessIndividual;
+                break;
+            };
+            fitness += fitnessIndividual;
 
         }
-        // for each day:
-            // sort by time
-            // sum up the duration of all
-            // TODO: get the timespan (last end - first start)
-            //  calculate value: timespan - sum
-            // if < 0 break and return the value
-            // else fitness += value
         return fitness;
     }
 

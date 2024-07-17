@@ -13,7 +13,6 @@ public class Timeslot {
     public long getDuration(){
         return MINUTES.between(start, end);
     }
-    // TODO: compare by day (Serializable?)
 
     public Timeslot(DayOfWeek day, LocalTime start, LocalTime end) {
         this.day = day;
