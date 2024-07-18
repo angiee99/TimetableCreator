@@ -20,8 +20,8 @@ public class SelectionServiceImpl implements SelectionService {
         List<Individual> selectedIndividuals = new ArrayList<>();
         for(Individual individual : population){
             int fitnessValue = fitness(individual);
+            individual.setFitness(fitnessValue);
             if(fitnessValue >= 0){
-                individual.setFitness(fitnessValue);
                 selectedIndividuals.add(individual);
             }
         }
@@ -62,6 +62,7 @@ public class SelectionServiceImpl implements SelectionService {
 
             if(fitnessIndividual < 0) { // this individual has the overlap
                 fitness = fitnessIndividual;
+                individual.setFitness(fitness);
                 break;
             };
             fitness += fitnessIndividual;

@@ -1,21 +1,17 @@
 package org.example.timetable.model;
 
 public class Gene {
-    // is this class really needed
-    Activity activity;
-    //TODO: mutation
-    public Gene( Activity activity) {
-        this.activity = activity;
-    }
+    final Activity activity;
 
-    public Gene() {
+    public Gene(Activity activity) {
+        this.activity = activity;
     }
 
     public Activity getActivity() {
         return activity;
     }
 
-    public void setActivity(Activity activity) {
-        this.activity = activity;
+    public Gene withActivity(Activity activity) {
+        return new Gene(activity);
     }
 }

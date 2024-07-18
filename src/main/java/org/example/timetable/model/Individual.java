@@ -22,15 +22,24 @@ public class Individual {
         return genes;
     }
 
-    public void setGenes(List<Gene> genes) {
-        this.genes = genes;
-    }
-
     public int getFitness() {
         return fitness;
     }
 
     public void setFitness(int fitness) {
         this.fitness = fitness;
+    }
+
+    public Individual replaceGene(Gene geneToMutate, Gene newGene) {
+        int indexGeneToMutate = genes.indexOf(geneToMutate);
+        List<Gene> newGenes = new ArrayList<>();
+
+        for (int i = 0; i < genes.size(); i++) {
+            if(i == indexGeneToMutate){
+                newGenes.add(newGene);
+            }
+            else newGenes.add(this.genes.get(i));
+        }
+        return new Individual(newGenes);
     }
 }
