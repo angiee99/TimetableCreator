@@ -1,7 +1,6 @@
 package org.example.timetable.service.implementation;
 
 import org.example.timetable.model.Activity;
-import org.example.timetable.model.ActivityType;
 import org.example.timetable.model.Gene;
 import org.example.timetable.model.Individual;
 import org.example.timetable.service.MutationService;

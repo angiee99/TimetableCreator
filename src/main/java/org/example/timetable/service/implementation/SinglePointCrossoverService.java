@@ -1,6 +1,5 @@
 package org.example.timetable.service.implementation;
 
-import org.example.timetable.model.Gene;
 import org.example.timetable.model.Individual;
 import org.example.timetable.service.CrossoverService;
 import org.springframework.stereotype.Service;

@@ -37,7 +37,7 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
 
     @Override
     public List<Activity> createSchedule(List<Activity> activities) {
-        List<Individual> population = (ArrayList<Individual>) populationGenerator.generate(activities, POPULATION_SIZE);
+        List<Individual> population =  populationGenerator.generate(activities, POPULATION_SIZE);
         List<Individual> previousPopulation = population;
 
         for (int i = 0; i < GENERATION_COUNT; i++) {
@@ -53,7 +53,7 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
 
             // crossover
             List<Individual> populationWithOffsprings =  crossoverService.crossover(List.copyOf(selectedPopulation), POPULATION_SIZE);
-
+            // mutation
             List<Individual> populationWithMutations =  mutationService.mutate(List.copyOf(populationWithOffsprings), activities);
 
             previousPopulation = List.copyOf(selectedPopulation); // selected population

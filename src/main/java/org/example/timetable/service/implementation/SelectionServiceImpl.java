@@ -20,7 +20,7 @@ public class SelectionServiceImpl implements SelectionService {
         List<Individual> selectedIndividuals = new ArrayList<>();
         for(Individual individual : population){
             int fitnessValue = fitness(individual);
-            individual.setFitness(fitnessValue);
+            individual.setFitness(fitnessValue); // this may be redundant (but test it)
             if(fitnessValue >= 0){
                 selectedIndividuals.add(individual);
             }
@@ -66,8 +66,9 @@ public class SelectionServiceImpl implements SelectionService {
                 break;
             };
             fitness += fitnessIndividual;
-
         }
+
+        individual.setFitness(fitness);
         return fitness;
     }
 
