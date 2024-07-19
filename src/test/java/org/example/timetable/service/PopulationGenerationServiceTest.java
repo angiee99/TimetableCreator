@@ -1,28 +1,31 @@
 package org.example.timetable.service;
 
 import org.example.timetable.model.Activity;
+import org.example.timetable.model.Individual;
 import org.example.timetable.service.implementation.CsvInputReaderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class GeneticAlgStarterServiceTest {
-
+public class PopulationGenerationServiceTest {
     @Autowired
-    GeneticAlgStarterService geneticAlgStarterService;
+    PopulationGenerationService generationService;
+
     @Test
     void test(){
         CsvInputReaderService readerService = new CsvInputReaderService();
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
                 .read("/Users/angelina/Documents/BachelorsWork/stage0/DemoInputSchedule.csv");
 
-        List<Activity> result = geneticAlgStarterService.createSchedule(list);
-        assertFalse(result.isEmpty());
+        ArrayList<Individual> generatedPopulation = new ArrayList<>
+                (generationService.generate(list, 10));
+
+        assertFalse(generatedPopulation.isEmpty());
+        assertEquals(10, generatedPopulation.size());
     }
 }

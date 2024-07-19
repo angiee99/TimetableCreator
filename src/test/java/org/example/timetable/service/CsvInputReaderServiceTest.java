@@ -23,8 +23,6 @@ public class CsvInputReaderServiceTest {
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
                 .read("/Users/angelina/Documents/BachelorsWork/stage0/DemoInputSchedule.csv");
 
-//        generationService.generate(list, 10); -> generator test
-
         assertEquals(12, list.size());
         assertFalse(list.get(0).getRoom().isEmpty());
     }
