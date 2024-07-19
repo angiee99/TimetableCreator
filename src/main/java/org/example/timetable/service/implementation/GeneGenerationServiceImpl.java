@@ -18,9 +18,8 @@ public class GeneGenerationServiceImpl implements GeneGenerationService {
         //select one random activity from activitiesByType
         Random random = new Random();
         int randomIndex = random.nextInt(activitiesByType.size());
-        Gene gene = new Gene(activitiesByType.get(randomIndex));
 
-        return gene;
+        return new Gene(activitiesByType.get(randomIndex));
     }
 
     private List<Activity> getActivitiesByType(ActivityType type, List<Activity> activities) {

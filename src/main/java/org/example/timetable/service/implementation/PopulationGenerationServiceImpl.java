@@ -21,7 +21,7 @@ public class PopulationGenerationServiceImpl implements PopulationGenerationServ
     public List<Individual> generate(List<Activity> activities, int populationSize) {
         Set<ActivityType> allActivityTypes = getAllUniqueActivityTypes(activities);
 
-        List<Individual> individuals = new ArrayList<>();
+        ArrayList<Individual> individuals = new ArrayList<>();
         for (int i = 0; i < populationSize; i++) {
             Individual chromosome = new Individual();
 
@@ -41,12 +41,9 @@ public class PopulationGenerationServiceImpl implements PopulationGenerationServ
         for(Activity activity : activities){
             activityTypes.add(activity.getActivityType());
         }
-        return  activityTypes;
+        return activityTypes;
     }
 
-    public GeneGenerationService getGeneGenerator() {
-        return geneGenerator;
-    }
     @Autowired
     public void setGeneGenerator(GeneGenerationService geneGenerator) {
         this.geneGenerator = geneGenerator;

@@ -29,7 +29,8 @@ public class SelectionServiceImpl implements SelectionService {
         return selectedIndividuals;
     }
 
-    // returns the fitness value, if it is negative, the individual id discarded
+    // returns the fitness value
+    // if it is negative, the individual id discarded
     // else the lesser the fitness is, the better
     @Override
     public int fitness(Individual individual) {
@@ -62,7 +63,7 @@ public class SelectionServiceImpl implements SelectionService {
 
             if(fitnessIndividual < 0) { // this individual has the overlap
                 fitness = fitnessIndividual;
-                individual.setFitness(fitness);
+                individual.setFitness(fitness); // this looks redundant
                 break;
             };
             fitness += fitnessIndividual;

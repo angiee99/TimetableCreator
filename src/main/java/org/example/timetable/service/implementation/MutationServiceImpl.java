@@ -33,7 +33,7 @@ public class MutationServiceImpl implements MutationService {
                 Activity mutatedActivity = activitiesByType.get(rand.nextInt(activitiesByType.size()));
 
                 // change the Gene in individual
-                Gene newGene = geneToMutate.withActivity(mutatedActivity); //HERE!!!
+                Gene newGene = geneToMutate.withActivity(mutatedActivity);
 
                 Individual mutatedIndividual = individual.replaceGene(geneToMutate, newGene);
                 mutatedPopulation.add(mutatedIndividual);
