@@ -6,5 +6,4 @@ import java.util.List;
 
 public interface SelectionService {
     List<Individual> select(List<Individual> population);
-    int fitness(Individual individual);
 }
