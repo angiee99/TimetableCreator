@@ -1,9 +1,6 @@
 package org.example.timetable.service.implementation;
 
-import org.example.timetable.model.Activity;
-import org.example.timetable.model.ActivityType;
-import org.example.timetable.model.Gene;
-import org.example.timetable.model.Individual;
+import org.example.timetable.model.*;
 import org.example.timetable.service.GeneGenerationService;
 import org.example.timetable.service.PopulationGenerationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +15,7 @@ import java.util.Set;
 public class PopulationGenerationServiceImpl implements PopulationGenerationService {
     GeneGenerationService geneGenerator;
     @Override
-    public List<Individual> generate(List<Activity> activities, int populationSize) {
+    public Generation generate(List<Activity> activities, int populationSize) {
         Set<ActivityType> allActivityTypes = getAllUniqueActivityTypes(activities);
 
         ArrayList<Individual> individuals = new ArrayList<>();
@@ -33,7 +30,7 @@ public class PopulationGenerationServiceImpl implements PopulationGenerationServ
             individuals.add(chromosome);
         }
 
-        return individuals;
+        return new Generation(individuals);
     }
 
     private Set<ActivityType> getAllUniqueActivityTypes(List<Activity> activities) {

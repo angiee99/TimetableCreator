@@ -2,6 +2,7 @@ package org.example.timetable.service.implementation;
 
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.Gene;
+import org.example.timetable.model.Generation;
 import org.example.timetable.model.Individual;
 import org.example.timetable.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,15 +38,16 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
 
     @Override
     public List<Activity> createSchedule(List<Activity> activities) {
-        List<Individual> population =  populationGenerator.generate(activities, POPULATION_SIZE);
-        List<Individual> previousPopulation = population;
+        Generation generation =  populationGenerator.generate(activities, POPULATION_SIZE);
+        Generation previousPopulation = generation;
 
         for (int i = 0; i < GENERATION_COUNT; i++) {
 
-            ArrayList<Individual> selectedPopulation = (ArrayList<Individual>) selectionService.select(List.copyOf(population));// selection
+            ArrayList<Individual> selectedPopulation = (ArrayList<Individual>) selectionService.select(
+                    List.copyOf(generation.getPopulation()));// selection
 
             if(selectedPopulation.isEmpty()){ // no solution found
-                population = previousPopulation;
+                generation = previousPopulation.withPopulation();
                 break;
             }
             //TODO: break if the fitness target was met -> set the target, calculate the fitness of whole population
@@ -56,11 +58,12 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
             // mutation
             List<Individual> populationWithMutations =  mutationService.mutate(List.copyOf(populationWithOffsprings), activities);
 
-            previousPopulation = List.copyOf(selectedPopulation); // selected population
-            population = List.copyOf(populationWithMutations);
+            previousPopulation = new Generation(selectedPopulation); // selected population
+            generation = new Generation(new ArrayList<>(populationWithMutations));
         }
+        //TODO: HERE to implement in Generation  this method like getBestIndividual
+        Individual bestIndividual = chooseBestIndividual(generation.getPopulation());
 
-        Individual bestIndividual = chooseBestIndividual(population);
         List<Activity> result = bestIndividual.getGenes().stream().map(Gene::getActivity).toList();
         return result;
     }
@@ -72,6 +75,6 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
         population = population.stream().filter(individual -> individual.getFitness()>=0).toList();
         if(population.isEmpty())
             return new Individual(); // change it to say No solution
-        return population.get(0); // return with lowest fitness value
+        return population.get(0); // return with the lowest fitness value
     }
 }

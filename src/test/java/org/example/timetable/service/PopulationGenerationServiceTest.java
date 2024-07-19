@@ -1,6 +1,7 @@
 package org.example.timetable.service;
 
 import org.example.timetable.model.Activity;
+import org.example.timetable.model.Generation;
 import org.example.timetable.model.Individual;
 import org.example.timetable.service.implementation.CsvInputReaderService;
 import org.junit.jupiter.api.Test;
@@ -22,10 +23,9 @@ public class PopulationGenerationServiceTest {
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
                 .read("/Users/angelina/Documents/BachelorsWork/stage0/DemoInputSchedule.csv");
 
-        ArrayList<Individual> generatedPopulation = new ArrayList<>
-                (generationService.generate(list, 10));
+       Generation generatedPopulation = generationService.generate(list, 10);
 
-        assertFalse(generatedPopulation.isEmpty());
-        assertEquals(10, generatedPopulation.size());
+        assertFalse(generatedPopulation.getPopulation().isEmpty());
+        assertEquals(10, generatedPopulation.getPopulation().size());
     }
 }
