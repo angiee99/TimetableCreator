@@ -38,7 +38,7 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
 
     @Override
     public List<Activity> createSchedule(List<Activity> activities) {
-        Generation generation =  populationGenerator.generate(activities, POPULATION_SIZE);
+        Generation generation = populationGenerator.generate(activities, POPULATION_SIZE);
         Generation previousPopulation = generation;
 
         for (int i = 0; i < GENERATION_COUNT; i++) {
@@ -47,7 +47,7 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
                     List.copyOf(generation.getPopulation()));// selection
 
             if(selectedPopulation.isEmpty()){ // no solution found
-                generation = previousPopulation.withPopulation();
+                generation = previousPopulation.withPopulation(); // mb name it Copy
                 break;
             }
             //TODO: break if the fitness target was met -> set the target, calculate the fitness of whole population
@@ -61,20 +61,10 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
             previousPopulation = new Generation(selectedPopulation); // selected population
             generation = new Generation(new ArrayList<>(populationWithMutations));
         }
-        //TODO: HERE to implement in Generation  this method like getBestIndividual
-        Individual bestIndividual = chooseBestIndividual(generation.getPopulation());
 
+        Individual bestIndividual = generation.getBestIndividual();
         List<Activity> result = bestIndividual.getGenes().stream().map(Gene::getActivity).toList();
         return result;
     }
 
-    //TODO: find the individual with best (lowest) fitness value
-    //but after crossover the fitness is reset to 0 and not calculated,
-    // fitness for now will be present only if we break from for cycle when fitness target is met
-    private Individual chooseBestIndividual(List<Individual> population) {
-        population = population.stream().filter(individual -> individual.getFitness()>=0).toList();
-        if(population.isEmpty())
-            return new Individual(); // change it to say No solution
-        return population.get(0); // return with the lowest fitness value
-    }
 }
