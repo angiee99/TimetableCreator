@@ -19,7 +19,7 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
     private MutationService mutationService;
     private final int GENERATION_COUNT = 50; // 100-200
     private final int POPULATION_SIZE = 10; // 50
-    private final int FITNESS_TARGET = 180; // 200 minutes of breaks between classes per week -> 3hours 20minutes
+    private final int FITNESS_TARGET = 250; // 200 minutes of breaks between classes per week -> 3hours 20minutes
     @Autowired
     public void setPopulationGenerator(PopulationGenerationService populationGenerator) {
         this.populationGenerator = populationGenerator;
@@ -56,13 +56,12 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
 
             // what if only 1 selected?
 
-            // if fitness target is met or it is the last iteration, break with new selected individuals
+            // if fitness target is met, or it is the last iteration -> break with new selected individuals
             if(selectedFromPreviousGeneration.getBestIndividual().getFitness() <= FITNESS_TARGET
                 || i == GENERATION_COUNT -1){
                 generation = selectedFromPreviousGeneration.withPopulation(); // mb name it Copy
                 break;
             }
-
 
             // crossover
             List<Individual> populationWithOffsprings =  crossoverService.crossover(List.copyOf(selectedPopulation), POPULATION_SIZE);

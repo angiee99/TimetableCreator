@@ -2,6 +2,7 @@ package org.example.timetable.service.implementation;
 
 import org.example.timetable.model.Gene;
 import org.example.timetable.model.Individual;
+import org.example.timetable.model.Timeslot;
 import org.example.timetable.service.FitnessCalcService;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +20,6 @@ public class FitnessCalcServiceImpl implements FitnessCalcService {
     public int fitness(Individual individual) {
         int fitness = 0;
 
-        // for each day:
-        // sort by time
-        // sum up the duration of all
-        // get the timespan (last end - first start)
-        // calculate value: timespan - sum
-        // if < 0 break and return the value
-        // else fitness += value
         for(int i =1; i <= 7; i++ ){
             // get the activities at that day
             List<Gene> activitiesByDay = getActivitiesByDay(individual, i);
@@ -44,11 +38,28 @@ public class FitnessCalcServiceImpl implements FitnessCalcService {
 
             int fitnessIndividual = (int) (timespan - sum);
 
-            if(fitnessIndividual < 0) { // this individual has the overlap
+            if(fitnessIndividual < 0) { // this individual has the overlap because NO BREAKS were detected
                 fitness = fitnessIndividual;
-                individual.setFitness(fitness); // this looks redundant
                 break;
-            };
+            }
+
+            // Double check for overlaps
+            boolean hasOverlap = false;
+            for (int j = 0; j < activitiesByDaySorted.size() - 1; j++) {
+                Timeslot current = activitiesByDaySorted.get(j).getActivity().getTimeslot();
+                Timeslot next = activitiesByDaySorted.get(j + 1).getActivity().getTimeslot();
+
+                if (!current.getEnd().isBefore(next.getStart())) {
+                    hasOverlap = true;
+                    break; // there is an overlap
+                }
+            }
+            // Have we detected an overlap in for cycle before?
+            if(hasOverlap) {
+                fitness = -1;
+                break;
+            }
+
             fitness += fitnessIndividual;
         }
 
