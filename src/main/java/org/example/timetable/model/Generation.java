@@ -19,7 +19,7 @@ public class Generation {
     public ArrayList<Individual> getPopulation() {
         return population;
     }
-    public Generation withPopulation(){
+    public Generation copyWithPopulation(){
         return new Generation(population);
     }
     public Individual getBestIndividual(){

@@ -48,7 +48,7 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
                     List.copyOf(generation.getPopulation()));// selection
 
             if(selectedPopulation.isEmpty()){ // no solution found
-                generation = selectedFromPreviousGeneration.withPopulation(); // mb name it Copy
+                generation = selectedFromPreviousGeneration.copyWithPopulation();
                 break;
             }
 
@@ -59,7 +59,7 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
             // if fitness target is met, or it is the last iteration -> break with new selected individuals
             if(selectedFromPreviousGeneration.getBestIndividual().getFitness() <= FITNESS_TARGET
                 || i == GENERATION_COUNT -1){
-                generation = selectedFromPreviousGeneration.withPopulation(); // mb name it Copy
+                generation = selectedFromPreviousGeneration.copyWithPopulation();
                 break;
             }
 
