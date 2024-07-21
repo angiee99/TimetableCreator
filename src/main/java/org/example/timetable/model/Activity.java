@@ -1,12 +1,14 @@
 package org.example.timetable.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Activity {
     ActivityType activityType;
     Timeslot timeslot;
     String room;
     Boolean isAvailable;
-
+    @JsonIgnore
     public long getDuration(){
         return timeslot.getDuration();
     }
