@@ -19,7 +19,6 @@ public class FitnessCalcServiceImpl implements FitnessCalcService {
     @Override
     public int fitness(Individual individual) {
         int fitness = 0;
-
         for(int i =1; i <= 7; i++ ){
             // get the activities at that day
             List<Gene> activitiesByDay = getActivitiesByDay(individual, i);
@@ -44,17 +43,7 @@ public class FitnessCalcServiceImpl implements FitnessCalcService {
             }
 
             // Double check for overlaps
-            boolean hasOverlap = false;
-            for (int j = 0; j < activitiesByDaySorted.size() - 1; j++) {
-                Timeslot current = activitiesByDaySorted.get(j).getActivity().getTimeslot();
-                Timeslot next = activitiesByDaySorted.get(j + 1).getActivity().getTimeslot();
-
-                if (!current.getEnd().isBefore(next.getStart())) {
-                    hasOverlap = true;
-                    break; // there is an overlap
-                }
-            }
-            // Have we detected an overlap in for cycle before?
+            boolean hasOverlap = hasOverlaps(activitiesByDaySorted);
             if(hasOverlap) {
                 fitness = -1;
                 break;
@@ -65,6 +54,18 @@ public class FitnessCalcServiceImpl implements FitnessCalcService {
 
         individual.setFitness(fitness);
         return fitness;
+    }
+
+    private boolean hasOverlaps(List<Gene> activities){
+        for (int j = 0; j < activities.size() - 1; j++) {
+            Timeslot current = activities.get(j).getActivity().getTimeslot();
+            Timeslot next = activities.get(j + 1).getActivity().getTimeslot();
+
+            if (current.getEnd().isAfter(next.getStart())) {
+                return true;// there is an overlap
+            }
+        }
+        return false;
     }
 
 
