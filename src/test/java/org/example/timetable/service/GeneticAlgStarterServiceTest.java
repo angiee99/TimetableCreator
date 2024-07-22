@@ -15,15 +15,18 @@ public class GeneticAlgStarterServiceTest {
 
     @Autowired
     GeneticAlgStarterService geneticAlgStarterService;
-
     @Autowired
     InputReaderService readerService;
+    @Autowired
+    InputFiltrationService inputFiltrationService;
     @Test
     void test(){
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
                 .read("/Users/angelina/Documents/BachelorsWork/stage0/DemoInputSchedule.csv");
 
-        List<Activity> result = geneticAlgStarterService.createSchedule(list);
+        List<Activity> filtered = inputFiltrationService.filtrate(list);
+
+        List<Activity> result = geneticAlgStarterService.createSchedule(filtered);
         assertFalse(result.isEmpty());
     }
 }

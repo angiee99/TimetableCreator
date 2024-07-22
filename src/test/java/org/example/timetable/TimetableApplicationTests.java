@@ -2,6 +2,7 @@ package org.example.timetable;
 
 import org.example.timetable.model.Activity;
 import org.example.timetable.service.GeneticAlgStarterService;
+import org.example.timetable.service.InputFiltrationService;
 import org.example.timetable.service.InputReaderService;
 import org.example.timetable.service.OutputService;
 import org.junit.jupiter.api.Test;
@@ -25,13 +26,18 @@ class TimetableApplicationTests {
 
     @Autowired
     OutputService outputService;
+
+    @Autowired
+    InputFiltrationService inputFiltrationService;
     @Test
     void fullSuccessScenario(){
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
                 .read("/Users/angelina/Documents/BachelorsWork/stage0/DemoInputSchedule.csv");
         assertFalse(list.isEmpty());
+        // remove not available activities
+        List<Activity> filteredList = inputFiltrationService.filtrate(list);
 
-        List<Activity> schedule = geneticAlgStarterService.createSchedule(list);
+        List<Activity> schedule = geneticAlgStarterService.createSchedule(filteredList);
         assertFalse(schedule.isEmpty());
 
         // create output in JSON file

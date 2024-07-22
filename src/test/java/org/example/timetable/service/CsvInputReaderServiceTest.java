@@ -25,7 +25,7 @@ public class CsvInputReaderServiceTest {
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
                 .read("/Users/angelina/Documents/BachelorsWork/stage0/DemoInputSchedule.csv");
 
-        assertEquals(12, list.size());
+        assertEquals(13, list.size());
         assertFalse(list.get(0).getRoom().isEmpty());
     }
 }
