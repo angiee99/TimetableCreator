@@ -22,7 +22,7 @@ public class PopulationGenerationServiceTest {
     @Test
     void test(){
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
-                .read("/Users/angelina/Documents/BachelorsWork/stage0/DemoInputSchedule.csv");
+                .read("src/test/resources/DemoInputSchedule.csv");
 
        Generation generatedPopulation = generationService.generate(list, 10);
 

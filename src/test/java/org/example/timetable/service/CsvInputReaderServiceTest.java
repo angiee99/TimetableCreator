@@ -23,7 +23,7 @@ public class CsvInputReaderServiceTest {
     @Test
     void test(){
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
-                .read("/Users/angelina/Documents/BachelorsWork/stage0/DemoInputSchedule.csv");
+                .read("src/test/resources/DemoInputSchedule.csv");
 
         assertEquals(13, list.size());
         assertFalse(list.get(0).getRoom().isEmpty());

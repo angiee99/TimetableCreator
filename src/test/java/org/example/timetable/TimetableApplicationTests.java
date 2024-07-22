@@ -32,7 +32,7 @@ class TimetableApplicationTests {
     @Test
     void fullSuccessScenario(){
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
-                .read("/Users/angelina/Documents/BachelorsWork/stage0/DemoInputSchedule.csv");
+                .read("src/test/resources/DemoInputSchedule.csv");
         assertFalse(list.isEmpty());
         // remove not available activities
         List<Activity> filteredList = inputFiltrationService.filtrate(list);
