@@ -28,7 +28,14 @@ public class FitnessCalcServiceImpl implements FitnessCalcService {
             List<Gene> activitiesByDaySorted = activitiesByDay.stream().sorted
                     (Comparator.comparing(o -> o.getActivity().getTimeslot().getStart())).toList();
 
-            // sum up the duration of all
+            // Check for overlaps (mb add calculation of timespan here to reduce the time)
+            boolean hasOverlap = hasOverlaps(activitiesByDaySorted);
+            if (hasOverlap) {
+                fitness = -1;
+                break;
+            }
+
+            // Calculate the fitness value: sum up the duration of all
             long sum = activitiesByDaySorted.stream().mapToLong(a -> a.getActivity().getDuration()).sum();
 
             // get the timespan (last end - first start)
@@ -39,13 +46,6 @@ public class FitnessCalcServiceImpl implements FitnessCalcService {
 
             if(fitnessIndividual < 0) { // this individual has the overlap because NO BREAKS were detected
                 fitness = fitnessIndividual;
-                break;
-            }
-
-            // Double check for overlaps
-            boolean hasOverlap = hasOverlaps(activitiesByDaySorted);
-            if(hasOverlap) {
-                fitness = -1;
                 break;
             }
 
