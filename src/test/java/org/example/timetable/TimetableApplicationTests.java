@@ -2,7 +2,7 @@ package org.example.timetable;
 
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.exception.NoSolutionFoundException;
-import org.example.timetable.service.GeneticAlgStarterService;
+import org.example.timetable.geneticAlg.GeneticAlgStarterService;
 import org.example.timetable.service.InputFiltrationService;
 import org.example.timetable.service.InputReaderService;
 import org.example.timetable.service.OutputService;
@@ -37,7 +37,7 @@ class TimetableApplicationTests {
                 .read("src/test/resources/DemoInputSchedule.csv");
         assertFalse(list.isEmpty());
         // remove not available activities
-        List<Activity> filteredList = inputFiltrationService.filtrate(list);
+        List<Activity> filteredList = inputFiltrationService.filtrateByAvailability(list);
 
         List<Activity> schedule = geneticAlgStarterService.createSchedule(filteredList);
         assertFalse(schedule.isEmpty());
@@ -58,7 +58,7 @@ class TimetableApplicationTests {
                 .read("src/test/resources/DemoInputNoSolution.csv");
         assertFalse(list.isEmpty());
         // remove not available activities
-        List<Activity> filteredList = inputFiltrationService.filtrate(list);
+        List<Activity> filteredList = inputFiltrationService.filtrateByAvailability(list);
 
         assertThrows(NoSolutionFoundException.class, () -> geneticAlgStarterService.createSchedule(filteredList));
     }

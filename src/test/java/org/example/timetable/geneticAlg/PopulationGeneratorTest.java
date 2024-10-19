@@ -1,7 +1,8 @@
-package org.example.timetable.service;
+package org.example.timetable.geneticAlg;
 
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.Generation;
+import org.example.timetable.service.InputReaderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
-public class PopulationGenerationServiceTest {
+public class PopulationGeneratorTest {
     @Autowired
-    PopulationGenerationService generationService;
+    PopulationGenerator generationService;
 
     @Autowired
     InputReaderService readerService;

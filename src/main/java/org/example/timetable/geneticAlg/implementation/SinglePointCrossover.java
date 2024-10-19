@@ -1,7 +1,7 @@
-package org.example.timetable.service.implementation;
+package org.example.timetable.geneticAlg.implementation;
 
 import org.example.timetable.model.Individual;
-import org.example.timetable.service.CrossoverService;
+import org.example.timetable.geneticAlg.Crossover;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-public class SinglePointCrossoverService implements CrossoverService {
+public class SinglePointCrossover implements Crossover {
     private static final Random rand = new Random();
     @Override
-    public List<Individual> crossover(List<Individual> parentPopulation, int populationSize) {
+    public List<Individual> doCrossover(List<Individual> parentPopulation, int populationSize) {
         List<Individual> newPopulation = new ArrayList<>(); // here possible to add elite individuals from parents
         for (int i = 0; i < populationSize; i+=2) {
             // Randomly choose 2 parents from parentPopulation

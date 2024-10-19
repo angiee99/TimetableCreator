@@ -1,8 +1,8 @@
-package org.example.timetable.service.implementation;
+package org.example.timetable.geneticAlg.implementation;
 
+import org.example.timetable.geneticAlg.GeneGenerator;
 import org.example.timetable.model.*;
-import org.example.timetable.service.GeneGenerationService;
-import org.example.timetable.service.PopulationGenerationService;
+import org.example.timetable.geneticAlg.PopulationGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class PopulationGenerationServiceImpl implements PopulationGenerationService {
-    GeneGenerationService geneGenerator;
+public class PopulationGeneratorImpl implements PopulationGenerator {
+    GeneGenerator geneGenerator;
     @Override
     public Generation generate(List<Activity> activities, int populationSize) {
         Set<ActivityType> allActivityTypes = getAllUniqueActivityTypes(activities);
@@ -42,7 +42,7 @@ public class PopulationGenerationServiceImpl implements PopulationGenerationServ
     }
 
     @Autowired
-    public void setGeneGenerator(GeneGenerationService geneGenerator) {
+    public void setGeneGenerator(GeneGenerator geneGenerator) {
         this.geneGenerator = geneGenerator;
     }
 }

@@ -1,16 +1,16 @@
-package org.example.timetable.service.implementation;
+package org.example.timetable.geneticAlg.implementation;
 
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.ActivityType;
 import org.example.timetable.model.Gene;
-import org.example.timetable.service.GeneGenerationService;
+import org.example.timetable.geneticAlg.GeneGenerator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Random;
 
 @Service
-public class GeneGenerationServiceImpl implements GeneGenerationService {
+public class GeneGeneratorImpl implements GeneGenerator {
     @Override
     public Gene generateGene(ActivityType type, List<Activity> activities) {
         List<Activity> activitiesByType = getActivitiesByType(type, activities);

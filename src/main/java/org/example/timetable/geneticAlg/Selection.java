@@ -1,9 +1,9 @@
-package org.example.timetable.service;
+package org.example.timetable.geneticAlg;
 
 import org.example.timetable.model.Individual;
 
 import java.util.List;
 
-public interface SelectionService {
+public interface Selection {
     List<Individual> select(List<Individual> population);
 }

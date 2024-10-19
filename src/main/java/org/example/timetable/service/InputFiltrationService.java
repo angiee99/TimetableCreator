@@ -5,5 +5,5 @@ import org.example.timetable.model.Activity;
 import java.util.List;
 
 public interface InputFiltrationService {
-    List<Activity> filtrate(List<Activity> activities);
+    List<Activity> filtrateByAvailability(List<Activity> activities);
 }

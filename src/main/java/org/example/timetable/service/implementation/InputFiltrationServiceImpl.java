@@ -9,7 +9,7 @@ import java.util.List;
 public class InputFiltrationServiceImpl implements InputFiltrationService {
 
     @Override
-    public List<Activity> filtrate(List<Activity> activities) {
+    public List<Activity> filtrateByAvailability(List<Activity> activities) {
         // remove all not available activities
         return activities.stream().filter(Activity::getAvailable).toList();
     }

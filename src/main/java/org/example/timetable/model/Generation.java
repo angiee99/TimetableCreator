@@ -1,8 +1,8 @@
 package org.example.timetable.model;
 
 import org.example.timetable.model.exception.NoFitIndividualException;
-import org.example.timetable.service.FitnessCalcService;
-import org.example.timetable.service.implementation.FitnessCalcServiceImpl;
+import org.example.timetable.geneticAlg.FitnessCalculator;
+import org.example.timetable.geneticAlg.implementation.FitnessCalculatorImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -24,9 +24,9 @@ public class Generation {
         return new Generation(population);
     }
     public Individual getBestIndividual(){
-        FitnessCalcService fitnessCalcService = new FitnessCalcServiceImpl();
+        FitnessCalculator fitnessCalculator = new FitnessCalculatorImpl();
         for(Individual individual : population){
-            fitnessCalcService.fitness(individual);
+            fitnessCalculator.fitness(individual);
         }
         List<Individual> sortedByFitness = new ArrayList<>(population.stream()
                 .sorted(Comparator.comparing(Individual::getFitness)).toList());

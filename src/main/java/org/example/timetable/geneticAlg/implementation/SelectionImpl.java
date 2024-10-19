@@ -1,8 +1,8 @@
-package org.example.timetable.service.implementation;
+package org.example.timetable.geneticAlg.implementation;
 
 import org.example.timetable.model.Individual;
-import org.example.timetable.service.FitnessCalcService;
-import org.example.timetable.service.SelectionService;
+import org.example.timetable.geneticAlg.FitnessCalculator;
+import org.example.timetable.geneticAlg.Selection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SelectionServiceImpl implements SelectionService {
-    private FitnessCalcService fitnessCalculator;
+public class SelectionImpl implements Selection {
+    private FitnessCalculator fitnessCalculator;
     @Autowired
-    public void setFitnessCalculator(FitnessCalcService fitnessCalculator) {
+    public void setFitnessCalculator(FitnessCalculator fitnessCalculator) {
         this.fitnessCalculator = fitnessCalculator;
     }
 
