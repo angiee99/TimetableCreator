@@ -1,5 +1,6 @@
 package org.example.timetable.model;
 
+import org.example.timetable.model.exception.NoFitIndividualException;
 import org.example.timetable.service.FitnessCalcService;
 import org.example.timetable.service.implementation.FitnessCalcServiceImpl;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,9 @@ public class Generation {
 
         sortedByFitness.removeIf(individual -> individual.getFitness()<0);
 
+        if(sortedByFitness.isEmpty()){
+            throw new NoFitIndividualException("No individual with valid fitness found");
+        }
         return sortedByFitness.get(0);
     }
 }
