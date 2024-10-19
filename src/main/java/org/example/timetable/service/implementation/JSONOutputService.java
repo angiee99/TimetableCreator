@@ -7,6 +7,7 @@ import org.example.timetable.model.Activity;
 import org.example.timetable.service.OutputService;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 @Service
 public class JSONOutputService implements OutputService {
@@ -15,8 +16,12 @@ public class JSONOutputService implements OutputService {
     public Object formatOutput(List<Activity> schedule) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule()); // Register the JavaTimeModule
+
+        // sort the activities in schedule
+        List<Activity> sortedSchedule = schedule.stream()
+               .sorted(Comparator.comparing(Activity::getDay).thenComparing(Activity::getStart)).toList();
         try {
-            return objectMapper.writeValueAsString(schedule);
+            return objectMapper.writeValueAsString(sortedSchedule);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;

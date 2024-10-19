@@ -3,6 +3,9 @@ package org.example.timetable.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+
 public class Activity {
     ActivityType activityType;
     Timeslot timeslot;
@@ -36,6 +39,14 @@ public class Activity {
 
     public void setTimeslot(Timeslot timeslot) {
         this.timeslot = timeslot;
+    }
+    @JsonIgnore
+    public DayOfWeek getDay() {
+        return timeslot.getDay();
+    }
+    @JsonIgnore
+    public LocalTime getStart() {
+        return timeslot.getStart();
     }
 
     public String getRoom() {
