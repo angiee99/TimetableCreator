@@ -1,7 +1,6 @@
 package org.example.timetable.geneticAlg;
 
 import org.example.timetable.model.Activity;
-import org.example.timetable.geneticAlg.GeneticAlgStarterService;
 import org.example.timetable.service.InputFiltrationService;
 import org.example.timetable.service.InputReaderService;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,7 @@ public class GeneticAlgStarterServiceTest {
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
                 .read("src/test/resources/DemoInputSchedule.csv");
 
-        List<Activity> filtered = inputFiltrationService.filtrate(list);
+        List<Activity> filtered = inputFiltrationService.filtrateByAvailability(list);
 
         List<Activity> result = geneticAlgStarterService.createSchedule(filtered);
         assertFalse(result.isEmpty());
