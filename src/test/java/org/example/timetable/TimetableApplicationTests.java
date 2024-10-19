@@ -1,6 +1,7 @@
 package org.example.timetable;
 
 import org.example.timetable.model.Activity;
+import org.example.timetable.model.exception.NoSolutionFoundException;
 import org.example.timetable.service.GeneticAlgStarterService;
 import org.example.timetable.service.InputFiltrationService;
 import org.example.timetable.service.InputReaderService;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class TimetableApplicationTests {
@@ -49,5 +51,15 @@ class TimetableApplicationTests {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    @Test
+    void fullNoSolutionScenario(){
+        ArrayList<Activity> list = (ArrayList<Activity>) readerService
+                .read("src/test/resources/DemoInputNoSolution.csv");
+        assertFalse(list.isEmpty());
+        // remove not available activities
+        List<Activity> filteredList = inputFiltrationService.filtrate(list);
+
+        assertThrows(NoSolutionFoundException.class, () -> geneticAlgStarterService.createSchedule(filteredList));
     }
 }
