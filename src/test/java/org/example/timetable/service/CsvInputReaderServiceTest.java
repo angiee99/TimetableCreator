@@ -12,11 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 public class CsvInputReaderServiceTest {
-    @Autowired
-    PopulationGenerationService generationService;
-
-    @Autowired
-    GeneticAlgStarterService geneticAlgStarterService;
 
     @Autowired
     InputReaderService readerService;

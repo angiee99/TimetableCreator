@@ -1,8 +1,8 @@
 package org.example.timetable.model;
 
 import org.example.timetable.model.exception.NoFitIndividualException;
-import org.example.timetable.service.FitnessCalcService;
-import org.example.timetable.service.implementation.FitnessCalcServiceImpl;
+import org.example.timetable.geneticAlg.FitnessCalcService;
+import org.example.timetable.geneticAlg.implementation.FitnessCalcServiceImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

@@ -1,9 +1,9 @@
-package org.example.timetable.service.implementation;
+package org.example.timetable.geneticAlg.implementation;
 
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.Gene;
 import org.example.timetable.model.Individual;
-import org.example.timetable.service.MutationService;
+import org.example.timetable.geneticAlg.Mutation;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-public class MutationServiceImpl implements MutationService {
+public class MutationImpl implements Mutation {
     private static final Random rand = new Random();
     @Override
     public List<Individual> mutate(List<Individual> population, List<Activity> activities) {

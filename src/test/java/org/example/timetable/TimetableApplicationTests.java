@@ -2,7 +2,7 @@ package org.example.timetable;
 
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.exception.NoSolutionFoundException;
-import org.example.timetable.service.GeneticAlgStarterService;
+import org.example.timetable.geneticAlg.GeneticAlgStarterService;
 import org.example.timetable.service.InputFiltrationService;
 import org.example.timetable.service.InputReaderService;
 import org.example.timetable.service.OutputService;

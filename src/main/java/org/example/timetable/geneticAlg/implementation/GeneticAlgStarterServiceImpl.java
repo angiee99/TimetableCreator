@@ -1,12 +1,12 @@
-package org.example.timetable.service.implementation;
+package org.example.timetable.geneticAlg.implementation;
 
+import org.example.timetable.geneticAlg.*;
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.Gene;
 import org.example.timetable.model.Generation;
 import org.example.timetable.model.Individual;
 import org.example.timetable.model.exception.NoFitIndividualException;
 import org.example.timetable.model.exception.NoSolutionFoundException;
-import org.example.timetable.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,28 +15,28 @@ import java.util.List;
 
 @Service
 public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
-    private PopulationGenerationService populationGenerator;
-    private SelectionService selectionService;
-    private CrossoverService crossoverService;
-    private MutationService mutationService;
+    private PopulationGenerator populationGenerator;
+    private Selection selection;
+    private Crossover crossover;
+    private Mutation mutation;
     private final int GENERATION_COUNT = 50; // 100-200
     private final int POPULATION_SIZE = 10; // 50
     private final int FITNESS_TARGET = 250; // 200 minutes of breaks between classes per week -> 3hours 20minutes
     @Autowired
-    public void setPopulationGenerator(PopulationGenerationService populationGenerator) {
+    public void setPopulationGenerator(PopulationGenerator populationGenerator) {
         this.populationGenerator = populationGenerator;
     }
     @Autowired
-    public void setSelectionService(SelectionService selectionService) {
-        this.selectionService = selectionService;
+    public void setSelectionService(Selection selection) {
+        this.selection = selection;
     }
     @Autowired
-    public void setCrossoverService(CrossoverService crossoverService) {
-        this.crossoverService = crossoverService;
+    public void setCrossover(Crossover crossover) {
+        this.crossover = crossover;
     }
     @Autowired
-    public void setMutationService(MutationService mutationService) {
-        this.mutationService = mutationService;
+    public void setMutationService(Mutation mutation) {
+        this.mutation = mutation;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
 
         for (int i = 0; i < GENERATION_COUNT; i++) {
 
-            ArrayList<Individual> selectedPopulation = (ArrayList<Individual>) selectionService.select(
+            ArrayList<Individual> selectedPopulation = (ArrayList<Individual>) selection.select(
                     List.copyOf(generation.getPopulation()));// selection
 
             if(selectedPopulation.isEmpty()){ // no solution found in this iteration (think ab this case, if it breaks all the iteration)
@@ -65,9 +65,9 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
             }
 
             // crossover
-            List<Individual> populationWithOffsprings =  crossoverService.crossover(selectedPopulation, POPULATION_SIZE);
+            List<Individual> populationWithOffsprings =  crossover.doCrossover(selectedPopulation, POPULATION_SIZE);
             // mutation
-            List<Individual> populationWithMutations =  mutationService.mutate(populationWithOffsprings, activities);
+            List<Individual> populationWithMutations =  mutation.mutate(populationWithOffsprings, activities);
 
             generation = new Generation(new ArrayList<>(populationWithMutations)); // update current generation
         }

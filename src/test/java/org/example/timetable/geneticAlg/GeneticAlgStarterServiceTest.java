@@ -1,6 +1,9 @@
-package org.example.timetable.service;
+package org.example.timetable.geneticAlg;
 
 import org.example.timetable.model.Activity;
+import org.example.timetable.geneticAlg.GeneticAlgStarterService;
+import org.example.timetable.service.InputFiltrationService;
+import org.example.timetable.service.InputReaderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

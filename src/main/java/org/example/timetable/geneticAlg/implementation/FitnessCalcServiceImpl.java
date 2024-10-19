@@ -1,9 +1,9 @@
-package org.example.timetable.service.implementation;
+package org.example.timetable.geneticAlg.implementation;
 
+import org.example.timetable.geneticAlg.FitnessCalcService;
 import org.example.timetable.model.Gene;
 import org.example.timetable.model.Individual;
 import org.example.timetable.model.Timeslot;
-import org.example.timetable.service.FitnessCalcService;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -67,7 +67,6 @@ public class FitnessCalcServiceImpl implements FitnessCalcService {
         }
         return false;
     }
-
 
     private List<Gene> getActivitiesByDay(Individual individual, int i) {
         return individual.getGenes().stream().filter(
