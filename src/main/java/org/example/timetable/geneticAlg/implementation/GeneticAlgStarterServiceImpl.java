@@ -22,6 +22,7 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
     private final int GENERATION_COUNT = 50; // 100-200
     private final int POPULATION_SIZE = 10; // 50
     private final int FITNESS_TARGET = 250; // 200 minutes of breaks between classes per week -> 3hours 20minutes
+    private int RETRY_COUNT = 10; // 50
     @Autowired
     public void setPopulationGenerator(PopulationGenerator populationGenerator) {
         this.populationGenerator = populationGenerator;
@@ -50,22 +51,33 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
                     List.copyOf(generation.getPopulation()));// selection
 
             if(selectedPopulation.isEmpty()){ // no solution found in this iteration (think ab this case, if it breaks all the iteration)
-                generation = selectedFromPreviousGeneration.copyWithPopulation();
-                break;
+                selectedPopulation = selectedFromPreviousGeneration.getPopulation();
+//                if(RETRY_COUNT > 0){
+//                    generation = populationGenerator.generate(activities, POPULATION_SIZE);
+//                    RETRY_COUNT -= 1;
+//                    continue;
+//                }
+//                else{
+//                    generation = selectedFromPreviousGeneration.copyWithPopulation();
+//                    break;
+//                }
             }
+            else{
+                // what if only 1 selected?
+                selectedFromPreviousGeneration = new Generation(selectedPopulation); //save the selected population
 
-            // what if only 1 selected?
-            selectedFromPreviousGeneration = new Generation(selectedPopulation); //save the selected population
-
-            // if fitness target is met, or it is the last iteration -> break with new selected individuals
-            if(selectedFromPreviousGeneration.getBestIndividual().getFitness() <= FITNESS_TARGET
-                || i == GENERATION_COUNT -1){
-                generation = selectedFromPreviousGeneration.copyWithPopulation();
-                break;
+                // if fitness target is met, or it is the last iteration -> break with new selected individuals
+                if((!selectedFromPreviousGeneration.getPopulation().isEmpty() &&
+                        selectedFromPreviousGeneration.getBestIndividual().getFitness() <= FITNESS_TARGET)
+                        || i == GENERATION_COUNT -1) {
+                    generation = selectedFromPreviousGeneration.copyWithPopulation();
+                    break;
+                }
             }
 
             // crossover
-            List<Individual> populationWithOffsprings =  crossover.doCrossover(selectedPopulation, POPULATION_SIZE);
+            List<Individual> populationWithOffsprings =  crossover.doCrossover(
+                    selectedPopulation, POPULATION_SIZE);
             // mutation
             List<Individual> populationWithMutations =  mutation.mutate(populationWithOffsprings, activities);
 

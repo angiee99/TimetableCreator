@@ -30,6 +30,4 @@ public class SelectionImpl implements Selection {
         // if too much left ->  add filter fitnessValue < 6(to minutes) hours of individual
         return selectedIndividuals;
     }
-
-
 }

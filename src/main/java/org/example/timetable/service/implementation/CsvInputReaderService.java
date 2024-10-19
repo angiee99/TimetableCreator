@@ -31,12 +31,10 @@ public class CsvInputReaderService implements InputReaderService {
                 // Parse each line and print it out or store it in a list
                 for (String cell : nextRecord) {
                     tempElement.add(cell);
-                    System.out.print(cell + "\t");
                 }
 
                 activities.add(stringToActivity(tempElement));
                 tempElement.clear();
-                System.out.println();
             }
         }
         catch (IOException | CsvValidationException e) {
