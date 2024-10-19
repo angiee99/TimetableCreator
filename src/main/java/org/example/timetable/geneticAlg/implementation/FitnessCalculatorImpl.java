@@ -1,6 +1,6 @@
 package org.example.timetable.geneticAlg.implementation;
 
-import org.example.timetable.geneticAlg.FitnessCalcService;
+import org.example.timetable.geneticAlg.FitnessCalculator;
 import org.example.timetable.model.Gene;
 import org.example.timetable.model.Individual;
 import org.example.timetable.model.Timeslot;
@@ -12,7 +12,7 @@ import java.util.List;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 @Service
-public class FitnessCalcServiceImpl implements FitnessCalcService {
+public class FitnessCalculatorImpl implements FitnessCalculator {
     // returns the fitness value
     // if it is negative, the individual id discarded
     // else the lesser the fitness is, the better

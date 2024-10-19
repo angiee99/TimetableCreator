@@ -1,7 +1,7 @@
 package org.example.timetable.geneticAlg.implementation;
 
 import org.example.timetable.model.Individual;
-import org.example.timetable.geneticAlg.FitnessCalcService;
+import org.example.timetable.geneticAlg.FitnessCalculator;
 import org.example.timetable.geneticAlg.Selection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,9 +11,9 @@ import java.util.List;
 
 @Service
 public class SelectionImpl implements Selection {
-    private FitnessCalcService fitnessCalculator;
+    private FitnessCalculator fitnessCalculator;
     @Autowired
-    public void setFitnessCalculator(FitnessCalcService fitnessCalculator) {
+    public void setFitnessCalculator(FitnessCalculator fitnessCalculator) {
         this.fitnessCalculator = fitnessCalculator;
     }
 
