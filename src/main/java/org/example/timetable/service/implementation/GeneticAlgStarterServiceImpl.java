@@ -64,9 +64,9 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
             }
 
             // crossover
-            List<Individual> populationWithOffsprings =  crossoverService.crossover(List.copyOf(selectedPopulation), POPULATION_SIZE);
+            List<Individual> populationWithOffsprings =  crossoverService.crossover(selectedPopulation, POPULATION_SIZE);
             // mutation
-            List<Individual> populationWithMutations =  mutationService.mutate(List.copyOf(populationWithOffsprings), activities);
+            List<Individual> populationWithMutations =  mutationService.mutate(populationWithOffsprings, activities);
 
             generation = new Generation(new ArrayList<>(populationWithMutations)); // update current generation
         }
