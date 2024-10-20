@@ -62,4 +62,25 @@ class TimetableApplicationTests {
 
         assertThrows(NoSolutionFoundException.class, () -> geneticAlgStarterService.createSchedule(filteredList));
     }
+    @Test
+    void biggerInputFileTest(){
+        ArrayList<Activity> list = (ArrayList<Activity>) readerService
+                .read("src/test/resources/BiggerInput.csv");
+        assertFalse(list.isEmpty());
+        // remove not available activities
+        List<Activity> filteredList = inputFiltrationService.filtrateByAvailability(list);
+
+        List<Activity> schedule = geneticAlgStarterService.createSchedule(filteredList);
+        assertFalse(schedule.isEmpty());
+
+        // create output in JSON file
+        String jsonOutput = (String) outputService.formatOutput(schedule);
+
+        // Write the JSON output to a file
+        try (FileWriter fileWriter = new FileWriter("schedule2.json")) {
+            fileWriter.write(jsonOutput);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
