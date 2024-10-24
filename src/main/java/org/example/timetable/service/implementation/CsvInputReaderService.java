@@ -8,11 +8,11 @@ import org.example.timetable.model.Timeslot;
 import org.example.timetable.service.InputReaderService;
 import org.springframework.stereotype.Service;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -29,15 +29,39 @@ public class CsvInputReaderService implements InputReaderService {
             while ((nextRecord = csvReader.readNext()) != null) {
 
                 // Parse each line and print it out or store it in a list
-                for (String cell : nextRecord) {
-                    tempElement.add(cell);
-                }
+                tempElement.addAll(Arrays.asList(nextRecord));
 
                 activities.add(stringToActivity(tempElement));
                 tempElement.clear();
             }
         }
         catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+
+        return activities;
+    }
+
+    public List<Activity> read(InputStream inputStream) {
+        List<Activity> activities = new ArrayList<>();
+        try (CSVReader csvReader = new CSVReader(new BufferedReader(new InputStreamReader(inputStream)))) {
+
+            String[] nextRecord;
+            List<String> tempElement = new ArrayList<>();
+
+            // Read each record from the CSV
+            while ((nextRecord = csvReader.readNext()) != null) {
+
+                // Parse each line and store values in a temporary list
+                tempElement.addAll(Arrays.asList(nextRecord));
+
+                // Convert the string list to an Activity object
+                activities.add(stringToActivity(tempElement));
+
+                // Clear the temporary list for the next record
+                tempElement.clear();
+            }
+        } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
 
