@@ -6,10 +6,12 @@ import org.example.timetable.model.exception.NoSolutionFoundException;
 import org.example.timetable.service.InputFiltrationService;
 import org.example.timetable.service.InputReaderService;
 import org.example.timetable.service.OutputService;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@CrossOrigin
 @RequestMapping("/schedule")
 public class ScheduleController {
     GeneticAlgStarterService geneticAlgStarterService;
@@ -68,5 +71,11 @@ public class ScheduleController {
         }
 
         return ResponseEntity.ok(jsonOutput);
+    }
+    @PostMapping("/test")
+    public ResponseEntity<String> uploadCSVTest(){
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("id", "0");
+        return ResponseEntity.ok(jsonObj.toJSONString());
     }
 }
