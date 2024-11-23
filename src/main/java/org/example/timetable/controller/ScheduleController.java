@@ -63,7 +63,7 @@ public class ScheduleController {
             jsonOutput = (String) outputService.formatOutput(schedule);
 
         } catch(NoSolutionFoundException e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body("No schedule can be created from the given input file");
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
