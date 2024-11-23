@@ -72,10 +72,4 @@ public class ScheduleController {
 
         return ResponseEntity.ok(jsonOutput);
     }
-    @PostMapping("/test")
-    public ResponseEntity<String> uploadCSVTest(){
-        JSONObject jsonObj = new JSONObject();
-        jsonObj.put("id", "0");
-        return ResponseEntity.ok(jsonObj.toJSONString());
-    }
 }
