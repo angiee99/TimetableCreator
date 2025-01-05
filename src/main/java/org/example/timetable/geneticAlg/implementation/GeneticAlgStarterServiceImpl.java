@@ -44,18 +44,28 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
     public List<Activity> createSchedule(List<Activity> activities) throws NoSolutionFoundException{
         Generation generation = populationGenerator.generate(activities, POPULATION_SIZE);
         Generation selectedFromPreviousGeneration = generation.copyWithPopulation();
+        int count_nothingSelected = 0;
+        int count_somethingSelected = 0;
 
         for (int i = 0; i < GENERATION_COUNT; i++) {
 
             ArrayList<Individual> selectedPopulation = (ArrayList<Individual>) selection.select(
                     List.copyOf(generation.getPopulation()));// selection
 
-            if(selectedPopulation.isEmpty()){ // no solution found in this iteration (think ab this case, if it breaks all the iteration)
-                selectedPopulation = selectedFromPreviousGeneration.getPopulation(); // mb doesnt make sense really
+            if(selectedPopulation.isEmpty()){ // no solution found in this iteration
+                if(i == 0){
+                    // try regenerating the starting population
+                    selectedPopulation = populationGenerator.generate(activities, POPULATION_SIZE).getPopulation();
+                }
+                else{
+                    selectedPopulation = new ArrayList<>(selectedFromPreviousGeneration.getPopulation());
+                }
+
+                count_nothingSelected++;
             }
             else{
                 selectedFromPreviousGeneration = new Generation(selectedPopulation); //save the selected population
-
+                count_somethingSelected++;
                 // if fitness target is met, or it is the last iteration -> break with new selected individuals
                 if(selectedFromPreviousGeneration.getBestIndividual().getFitness() <= FITNESS_TARGET
                         || i == GENERATION_COUNT -1) {
@@ -65,13 +75,15 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
             }
 
             // crossover
-            List<Individual> populationWithOffsprings =  crossover.doCrossover(
+            List<Individual> populationWithOffsprings = crossover.doCrossover(
                     selectedPopulation, POPULATION_SIZE);
             // mutation
-            List<Individual> populationWithMutations =  mutation.mutate(populationWithOffsprings, activities);
+            List<Individual> populationWithMutations = mutation.mutate(populationWithOffsprings, activities);
 
             generation = new Generation(new ArrayList<>(populationWithMutations)); // update current generation
         }
+        System.out.println(count_nothingSelected);
+        System.out.println(count_somethingSelected);
         // return if generation is empty
         if(generation.getPopulation().isEmpty()){
             System.out.println("No solution was found, the last generation is empty.");
