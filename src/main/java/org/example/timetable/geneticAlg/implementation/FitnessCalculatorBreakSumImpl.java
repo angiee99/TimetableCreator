@@ -11,10 +11,15 @@ import java.util.Comparator;
 import java.util.List;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
+
+/**
+ * Calculates fitness as the sum of breaks between activities
+ * However, if any activities overlap, the fitness value returned is -1
+ */
 @Service
-public class FitnessCalculatorImpl implements FitnessCalculator {
+public class FitnessCalculatorBreakSumImpl implements FitnessCalculator {
     // returns the fitness value
-    // if it is negative, the individual id discarded
+    // if it is negative, the individual is discarded
     // else the lesser the fitness is, the better
     @Override
     public int fitness(Individual individual) {

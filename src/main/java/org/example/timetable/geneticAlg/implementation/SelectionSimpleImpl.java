@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Selects any individual, whose fitness value is non-negative
+ */
 @Service
-public class SelectionImpl implements Selection {
+public class SelectionSimpleImpl implements Selection {
     private FitnessCalculator fitnessCalculator;
     @Autowired
     public void setFitnessCalculator(FitnessCalculator fitnessCalculator) {
