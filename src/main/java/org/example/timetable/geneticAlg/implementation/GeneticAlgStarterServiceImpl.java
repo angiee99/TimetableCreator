@@ -8,6 +8,7 @@ import org.example.timetable.model.Individual;
 import org.example.timetable.model.exception.NoFitIndividualException;
 import org.example.timetable.model.exception.NoSolutionFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,12 +18,12 @@ import java.util.List;
 public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
     private PopulationGenerator populationGenerator;
     private Selection selection;
+    private FitnessCalculator fitnessCalculator;
     private Crossover crossover;
     private Mutation mutation;
     private final int GENERATION_COUNT = 100; // 100-200
     private final int POPULATION_SIZE = 30; // 50
     private final int FITNESS_TARGET = 250; // 200 minutes of breaks between classes per week -> 3hours 20minutes
-    private int RETRY_COUNT = 10; // 50
     @Autowired
     public void setPopulationGenerator(PopulationGenerator populationGenerator) {
         this.populationGenerator = populationGenerator;
@@ -30,6 +31,10 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
     @Autowired
     public void setSelectionService(Selection selection) {
         this.selection = selection;
+    }
+    @Autowired
+    public void setFitnessCalculator(@Qualifier("fitnessCalculatorOverlapsImpl") FitnessCalculator fitnessCalculator) {
+        this.fitnessCalculator = fitnessCalculator;
     }
     @Autowired
     public void setCrossover(Crossover crossover) {
@@ -43,47 +48,23 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
     @Override
     public List<Activity> createSchedule(List<Activity> activities) throws NoSolutionFoundException{
         Generation generation = populationGenerator.generate(activities, POPULATION_SIZE);
-        Generation selectedFromPreviousGeneration = generation.copyWithPopulation();
-        int count_nothingSelected = 0;
-        int count_somethingSelected = 0;
-
         for (int i = 0; i < GENERATION_COUNT; i++) {
 
-            ArrayList<Individual> selectedPopulation = (ArrayList<Individual>) selection.select(
-                    List.copyOf(generation.getPopulation()));// selection
-
-            if(selectedPopulation.isEmpty()){ // no solution found in this iteration
-                if(i == 0){
-                    // try regenerating the starting population
-                    selectedPopulation = populationGenerator.generate(activities, POPULATION_SIZE).getPopulation();
-                }
-                else{
-                    selectedPopulation = new ArrayList<>(selectedFromPreviousGeneration.getPopulation());
-                }
-
-                count_nothingSelected++;
-            }
-            else{
-                selectedFromPreviousGeneration = new Generation(selectedPopulation); //save the selected population
-                count_somethingSelected++;
-                // if fitness target is met, or it is the last iteration -> break with new selected individuals
-                if(selectedFromPreviousGeneration.getBestIndividual().getFitness() <= FITNESS_TARGET
-                        || i == GENERATION_COUNT -1) {
-                    generation = selectedFromPreviousGeneration.copyWithPopulation();
-                    break;
-                }
+           // count the fitness for all individuals
+            for(Individual individual : generation.getPopulation()){
+                individual.setFitness(fitnessCalculator.fitness(individual));
             }
 
             // crossover
+            // todo: integrate selection inside the crossover (choose each 2 parents)
             List<Individual> populationWithOffsprings = crossover.doCrossover(
-                    selectedPopulation, POPULATION_SIZE);
+                    generation.getPopulation(), POPULATION_SIZE);
             // mutation
             List<Individual> populationWithMutations = mutation.mutate(populationWithOffsprings, activities);
 
             generation = new Generation(new ArrayList<>(populationWithMutations)); // update current generation
         }
-        System.out.println(count_nothingSelected);
-        System.out.println(count_somethingSelected);
+
         // return if generation is empty
         if(generation.getPopulation().isEmpty()){
             System.out.println("No solution was found, the last generation is empty.");
