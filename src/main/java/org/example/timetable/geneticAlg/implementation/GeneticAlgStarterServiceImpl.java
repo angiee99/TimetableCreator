@@ -17,20 +17,15 @@ import java.util.List;
 @Service
 public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
     private PopulationGenerator populationGenerator;
-    private Selection selection;
     private FitnessCalculator fitnessCalculator;
     private Crossover crossover;
     private Mutation mutation;
     private final int GENERATION_COUNT = 100; // 100-200
     private final int POPULATION_SIZE = 30; // 50
-    private final int FITNESS_TARGET = 250; // 200 minutes of breaks between classes per week -> 3hours 20minutes
+    private final int FITNESS_TARGET = 0; // 0 overlaps
     @Autowired
     public void setPopulationGenerator(PopulationGenerator populationGenerator) {
         this.populationGenerator = populationGenerator;
-    }
-    @Autowired
-    public void setSelectionService(Selection selection) {
-        this.selection = selection;
     }
     @Autowired
     public void setFitnessCalculator(@Qualifier("fitnessCalculatorOverlapsImpl") FitnessCalculator fitnessCalculator) {
@@ -50,13 +45,18 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
         Generation generation = populationGenerator.generate(activities, POPULATION_SIZE);
         for (int i = 0; i < GENERATION_COUNT; i++) {
 
-           // count the fitness for all individuals
+           // count the fitness for all individuals -> getBestIndividual will also do that (think about it)
             for(Individual individual : generation.getPopulation()){
-                individual.setFitness(fitnessCalculator.fitness(individual));
+                fitnessCalculator.fitness(individual);
             }
 
-            // crossover
-            // todo: integrate selection inside the crossover (choose each 2 parents)
+            // get the best individual fitness value
+            // if fitness target is met -> stop
+            if(generation.getBestIndividual(fitnessCalculator).getFitness() == FITNESS_TARGET){
+                break;
+            }
+
+            // crossover with selecting parents based on integrated selection method
             List<Individual> populationWithOffsprings = crossover.doCrossover(
                     generation.getPopulation(), POPULATION_SIZE);
             // mutation
@@ -73,7 +73,10 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
 
         Individual bestIndividual;
         try{
-            bestIndividual = generation.getBestIndividual();
+            bestIndividual = generation.getBestIndividual(fitnessCalculator);
+            if(bestIndividual.getFitness() > FITNESS_TARGET) {
+                throw new NoFitIndividualException("Final generation has no schedule without overlaps");
+            }
             List<Activity> result = bestIndividual.getGenes().stream().map(Gene::getActivity).toList();
             return result;
         } catch (NoFitIndividualException e){

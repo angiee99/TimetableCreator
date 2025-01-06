@@ -30,6 +30,7 @@ public class FitnessCalculatorOverlapsImpl implements FitnessCalculator {
             int overlapsCount = countOverlaps(activitiesByDaySorted);
             fitness = fitness + overlapsCount;
         }
+        individual.setFitness(fitness);
         return fitness;
     }
 

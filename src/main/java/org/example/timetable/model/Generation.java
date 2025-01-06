@@ -1,8 +1,7 @@
 package org.example.timetable.model;
 
-import org.example.timetable.model.exception.NoFitIndividualException;
 import org.example.timetable.geneticAlg.FitnessCalculator;
-import org.example.timetable.geneticAlg.implementation.FitnessCalculatorBreakSumImpl;
+import org.example.timetable.model.exception.NoFitIndividualException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,11 +19,13 @@ public class Generation {
     public ArrayList<Individual> getPopulation() {
         return population;
     }
-    public Generation copyWithPopulation(){
-        return new Generation(population);
-    }
-    public Individual getBestIndividual(){
-        FitnessCalculator fitnessCalculator = new FitnessCalculatorBreakSumImpl(); // FITNESS CALCULATOR
+
+    /**
+     * gets the best individual based on the fitness
+     * @param fitnessCalculator the implementation of {@link FitnessCalculator} to be used
+     * @return the individual with the lowest non-negative fitness value
+     */
+    public Individual getBestIndividual(FitnessCalculator fitnessCalculator){
         for(Individual individual : population){
             fitnessCalculator.fitness(individual);
         }
