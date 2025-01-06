@@ -24,7 +24,7 @@ public class Generation {
         return new Generation(population);
     }
     public Individual getBestIndividual(){
-        FitnessCalculator fitnessCalculator = new FitnessCalculatorBreakSumImpl();
+        FitnessCalculator fitnessCalculator = new FitnessCalculatorBreakSumImpl(); // FITNESS CALCULATOR
         for(Individual individual : population){
             fitnessCalculator.fitness(individual);
         }

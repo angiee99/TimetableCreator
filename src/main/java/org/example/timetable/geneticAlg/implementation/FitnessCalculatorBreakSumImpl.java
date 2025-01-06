@@ -13,14 +13,17 @@ import java.util.List;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 /**
- * Calculates fitness as the sum of breaks between activities
+ * Calculates fitness as the sum of breaks between activities (the bigger value, the worse)
  * However, if any activities overlap, the fitness value returned is -1
  */
 @Service
 public class FitnessCalculatorBreakSumImpl implements FitnessCalculator {
-    // returns the fitness value
-    // if it is negative, the individual is discarded
-    // else the lesser the fitness is, the better
+    /**
+     * returns the fitness value
+     * if it is negative, the individual fitness is to be discarded
+     * else the lesser the fitness is, the better
+     */
+
     @Override
     public int fitness(Individual individual) {
         int fitness = 0;
@@ -40,7 +43,7 @@ public class FitnessCalculatorBreakSumImpl implements FitnessCalculator {
                 break;
             }
 
-            // Calculate the fitness value: sum up the duration of all
+            // Calculate the fitness value: sum up the duration of all activities in a day
             long sum = activitiesByDaySorted.stream().mapToLong(a -> a.getActivity().getDuration()).sum();
 
             // get the timespan (last end - first start)

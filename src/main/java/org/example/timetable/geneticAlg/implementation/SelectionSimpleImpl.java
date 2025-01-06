@@ -4,6 +4,7 @@ import org.example.timetable.model.Individual;
 import org.example.timetable.geneticAlg.FitnessCalculator;
 import org.example.timetable.geneticAlg.Selection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
 public class SelectionSimpleImpl implements Selection {
     private FitnessCalculator fitnessCalculator;
     @Autowired
-    public void setFitnessCalculator(FitnessCalculator fitnessCalculator) {
+    public void setFitnessCalculator(@Qualifier("fitnessCalculatorBreakSumImpl") FitnessCalculator fitnessCalculator) {
         this.fitnessCalculator = fitnessCalculator;
     }
 
