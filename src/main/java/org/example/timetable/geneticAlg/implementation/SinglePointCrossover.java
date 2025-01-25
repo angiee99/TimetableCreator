@@ -1,7 +1,11 @@
 package org.example.timetable.geneticAlg.implementation;
 
+import org.example.timetable.geneticAlg.Selection;
 import org.example.timetable.model.Individual;
 import org.example.timetable.geneticAlg.Crossover;
+import org.example.timetable.model.exception.NoSolutionFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,14 +14,20 @@ import java.util.Random;
 
 @Service
 public class SinglePointCrossover implements Crossover {
+    private Selection selection;
     private static final Random rand = new Random();
+    @Autowired
+    public void setSelection(@Qualifier("selectionRouletteWheelImpl") Selection selection) {
+        this.selection = selection;
+    }
+
     @Override
     public List<Individual> doCrossover(List<Individual> parentPopulation, int populationSize) {
         List<Individual> newPopulation = new ArrayList<>(); // here possible to add elite individuals from parents
         for (int i = 0; i < populationSize; i+=2) {
-            // Randomly choose 2 parents from parentPopulation
-            Individual parent1 = parentPopulation.get(rand.nextInt(parentPopulation.size()));
-            Individual parent2 = parentPopulation.get(rand.nextInt(parentPopulation.size()));
+            // Select 2 parents from parentPopulation
+            Individual parent1 = selection.select(parentPopulation).get(0);
+            Individual parent2 = selection.select(parentPopulation).get(0);
 
             // Perform single-point crossover
             Individual[] offsprings = singlePointCrossover(parent1, parent2);
