@@ -7,6 +7,7 @@ import org.example.timetable.service.InputFiltrationService;
 import org.example.timetable.service.InputReaderService;
 import org.example.timetable.service.OutputService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -62,8 +63,13 @@ public class ScheduleController {
             jsonOutput = (String) outputService.formatOutput(schedule);
 
         } catch(NoSolutionFoundException e){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body("No schedule can be created from the given input file");
+            HttpHeaders headers = new HttpHeaders();
+            //add the new required header
+            headers.add("Access-Control-Expose-Headers", "error-message");
+            headers.add("error-message","No schedule without overlap can be created from the given input file");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .headers(headers)
+                    .body("");
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error reading the uploaded file");
