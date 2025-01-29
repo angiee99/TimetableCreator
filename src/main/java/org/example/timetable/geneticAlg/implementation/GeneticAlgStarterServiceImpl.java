@@ -22,13 +22,13 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
     private Mutation mutation;
     private final int GENERATION_COUNT = 100; // 100-200
     private final int POPULATION_SIZE = 30; // 50
-    private final int FITNESS_TARGET = 0; // 0 overlaps
+    private final int FITNESS_TARGET = 300; // overlaps *w1 + breaks*w2
     @Autowired
     public void setPopulationGenerator(PopulationGenerator populationGenerator) {
         this.populationGenerator = populationGenerator;
     }
     @Autowired
-    public void setFitnessCalculator(@Qualifier("fitnessCalculatorOverlapsImpl") FitnessCalculator fitnessCalculator) {
+    public void setFitnessCalculator(@Qualifier("fitnessCalculatorCombined") FitnessCalculator fitnessCalculator) {
         this.fitnessCalculator = fitnessCalculator;
     }
     @Autowired
@@ -74,9 +74,7 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
         Individual bestIndividual;
         try{
             bestIndividual = generation.getBestIndividual(fitnessCalculator);
-            if(bestIndividual.getFitness() > FITNESS_TARGET) {
-                throw new NoFitIndividualException("Final generation has no schedule without overlaps");
-            }
+
             List<Activity> result = bestIndividual.getGenes().stream().map(Gene::getActivity).toList();
             return result;
         } catch (NoFitIndividualException e){
