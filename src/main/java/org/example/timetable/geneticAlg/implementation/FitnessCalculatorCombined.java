@@ -4,6 +4,7 @@ import org.example.timetable.geneticAlg.FitnessCalculator;
 import org.example.timetable.model.Gene;
 import org.example.timetable.model.Individual;
 import org.example.timetable.model.Timeslot;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -14,8 +15,11 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 
 @Service
 public class FitnessCalculatorCombined implements FitnessCalculator {
-    private final int overlapWeight = 1000;
-    private final int breakWeight = 1;
+    @Value("${fitness.weights.overlap}")
+    private int overlapWeight;
+
+    @Value("${fitness.weights.breaks}")
+    private int breakWeight;
     @Override
     public int fitness(Individual individual) {
         int fitness = 0;
