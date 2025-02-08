@@ -15,10 +15,10 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 
 @Service
 public class FitnessCalculatorCombined implements FitnessCalculator {
-    @Value("${fitness.weights.overlap}")
+    @Value("${ga.fitness.weights.overlap}")
     private int overlapWeight;
 
-    @Value("${fitness.weights.breaks}")
+    @Value("${ga.fitness.weights.breaks}")
     private int breakWeight;
     @Override
     public int fitness(Individual individual) {

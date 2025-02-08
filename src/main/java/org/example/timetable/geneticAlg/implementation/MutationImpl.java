@@ -4,6 +4,7 @@ import org.example.timetable.model.Activity;
 import org.example.timetable.model.Gene;
 import org.example.timetable.model.Individual;
 import org.example.timetable.geneticAlg.Mutation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -11,7 +12,9 @@ import java.util.*;
 @Service
 public class MutationImpl implements Mutation {
     private static final Random rand = new Random();
-    private static final double mutationRate = 0.03; // % of individuals to undergo mutation
+
+    @Value("${ga.rate.mutation}")
+    private double mutationRate; // % of individuals to undergo mutation
     @Override
     public List<Individual> mutate(List<Individual> population, List<Activity> activities) {
         List<Individual> mutatedPopulation = new ArrayList<>(population); // a copy of the population
