@@ -6,23 +6,29 @@ import org.example.timetable.model.Individual;
 import org.example.timetable.geneticAlg.Mutation;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class MutationImpl implements Mutation {
     private static final Random rand = new Random();
+    private static final double mutationRate = 0.03; // % of individuals to undergo mutation
     @Override
     public List<Individual> mutate(List<Individual> population, List<Activity> activities) {
-        List<Individual> mutatedPopulation = new ArrayList<>();
-        for(Individual individual : population){
-            // randomly generate the index for gene to be mutated
-            int index = rand.nextInt(individual.getGenes().size());
-            // -> TODO: Add the probability based on available activities later
+        List<Individual> mutatedPopulation = new ArrayList<>(population); // a copy of the population
+        int mutationNumber = (int) (mutationRate * population.size()); // number of individuals to mutate
 
-            // get the Gene to be mutated
-            Gene geneToMutate = individual.getGenes().get(index);
+        Set<Integer> mutationIndices = new HashSet<>();
+        // Select unique random indices of individuals for mutation
+        while (mutationIndices.size() < mutationNumber) {
+            mutationIndices.add(rand.nextInt(population.size()));
+        }
+
+        for (int index : mutationIndices) {
+            Individual individual = mutatedPopulation.get(index);
+
+            // Randomly select a gene to mutate
+            int geneIndex = rand.nextInt(individual.getGenes().size());
+            Gene geneToMutate = individual.getGenes().get(geneIndex);
 
             // select all Activities with the same ActivityType as Gene from initialPopulation
             List<Activity> activitiesByType = getActivitiesByType(
@@ -34,11 +40,11 @@ public class MutationImpl implements Mutation {
 
                 // change the Gene in individual
                 Gene newGene = geneToMutate.withActivity(mutatedActivity);
-
                 Individual mutatedIndividual = individual.replaceGene(geneToMutate, newGene);
-                mutatedPopulation.add(mutatedIndividual);
+
+                // Update population with the mutated individual
+                mutatedPopulation.set(index, mutatedIndividual);
             }
-            else mutatedPopulation.add(individual);
         }
 
         return mutatedPopulation;
