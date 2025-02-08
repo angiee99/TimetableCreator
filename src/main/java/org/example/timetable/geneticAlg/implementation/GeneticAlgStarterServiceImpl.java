@@ -9,6 +9,7 @@ import org.example.timetable.model.exception.NoFitIndividualException;
 import org.example.timetable.model.exception.NoSolutionFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,9 +21,18 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
     private FitnessCalculator fitnessCalculator;
     private Crossover crossover;
     private Mutation mutation;
-    private final int GENERATION_COUNT = 100; // 100-200
-    private final int POPULATION_SIZE = 30; // 50
-    private final int FITNESS_TARGET = 300; // overlaps *w1 + breaks*w2
+    @Value("${ga.generationCount}")
+    private int GENERATION_COUNT;
+
+    @Value("${ga.populationSize}")
+    private int POPULATION_SIZE;
+
+    @Value("${ga.fitness.target}")
+    private int FITNESS_TARGET;
+
+    @Value("${ga.fitness.threshold}")
+    private int FITNESS_THRESHOLD;
+
     @Autowired
     public void setPopulationGenerator(PopulationGenerator populationGenerator) {
         this.populationGenerator = populationGenerator;
@@ -74,7 +84,9 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
         Individual bestIndividual;
         try{
             bestIndividual = generation.getBestIndividual(fitnessCalculator);
-
+            if(bestIndividual.getFitness() > FITNESS_THRESHOLD) {
+                throw new NoFitIndividualException("Final generation has no schedule without overlaps");
+            }
             List<Activity> result = bestIndividual.getGenes().stream().map(Gene::getActivity).toList();
             return result;
         } catch (NoFitIndividualException e){
