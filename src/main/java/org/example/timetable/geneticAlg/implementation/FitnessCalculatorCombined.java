@@ -52,7 +52,7 @@ public class FitnessCalculatorCombined implements FitnessCalculator {
         long timespan =  MINUTES.between(activitiesByDaySorted.get(0).getActivity().getTimeslot().getStart(),
                 activitiesByDaySorted.get(activitiesByDaySorted.size()-1).getActivity().getTimeslot().getEnd());
 
-        return (int) (timespan - sum);
+        return Math.round((timespan - sum) / 60f); // divide by 60 to return the hours
     }
 
     private int countOverlaps(List<Gene> activities) {
