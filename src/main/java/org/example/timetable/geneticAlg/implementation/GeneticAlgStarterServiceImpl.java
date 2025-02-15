@@ -62,7 +62,7 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
 
             // get the best individual fitness value
             // if fitness target is met -> stop
-            if(generation.getBestIndividual(fitnessCalculator).getFitness() == FITNESS_TARGET){
+            if(generation.getBestIndividual(fitnessCalculator).getFitness() <= FITNESS_TARGET){
                 break;
             }
 
