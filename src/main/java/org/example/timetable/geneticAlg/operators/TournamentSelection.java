@@ -19,7 +19,7 @@ public class TournamentSelection implements Selection{
             int index = random.nextInt(population.size());
             preselected.add(population.get(index));
         }
-        // choose the best individual from the tournament: the one with the lowest value of getFitness
+        // choose the best individual from the tournament: the one with the lowest value of fitness
         return preselected.stream()
                 .min(Comparator.comparingInt(Individual::getFitness)).get();
     }
