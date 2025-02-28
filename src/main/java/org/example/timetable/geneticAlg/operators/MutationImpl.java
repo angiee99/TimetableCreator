@@ -1,9 +1,8 @@
-package org.example.timetable.geneticAlg.implementation;
+package org.example.timetable.geneticAlg.operators;
 
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.Gene;
 import org.example.timetable.model.Individual;
-import org.example.timetable.geneticAlg.Mutation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

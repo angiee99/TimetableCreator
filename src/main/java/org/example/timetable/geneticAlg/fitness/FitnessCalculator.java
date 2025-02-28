@@ -1,4 +1,4 @@
-package org.example.timetable.geneticAlg;
+package org.example.timetable.geneticAlg.fitness;
 
 import org.example.timetable.model.Individual;
 

@@ -1,6 +1,6 @@
 package org.example.timetable.model;
 
-import org.example.timetable.geneticAlg.FitnessCalculator;
+import org.example.timetable.geneticAlg.fitness.FitnessCalculator;
 import org.example.timetable.model.exception.NoFitIndividualException;
 import org.springframework.stereotype.Component;
 

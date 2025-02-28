@@ -1,8 +1,6 @@
-package org.example.timetable.geneticAlg.implementation;
+package org.example.timetable.geneticAlg.generators;
 
-import org.example.timetable.geneticAlg.GeneGenerator;
 import org.example.timetable.model.*;
-import org.example.timetable.geneticAlg.PopulationGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

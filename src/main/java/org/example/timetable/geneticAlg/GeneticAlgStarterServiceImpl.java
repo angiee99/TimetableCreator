@@ -1,6 +1,9 @@
-package org.example.timetable.geneticAlg.implementation;
+package org.example.timetable.geneticAlg;
 
-import org.example.timetable.geneticAlg.*;
+import org.example.timetable.geneticAlg.fitness.FitnessCalculator;
+import org.example.timetable.geneticAlg.generators.PopulationGenerator;
+import org.example.timetable.geneticAlg.operators.Crossover;
+import org.example.timetable.geneticAlg.operators.Mutation;
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.Gene;
 import org.example.timetable.model.Generation;

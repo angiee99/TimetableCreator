@@ -1,4 +1,4 @@
-package org.example.timetable.geneticAlg;
+package org.example.timetable.geneticAlg.operators;
 
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.Individual;

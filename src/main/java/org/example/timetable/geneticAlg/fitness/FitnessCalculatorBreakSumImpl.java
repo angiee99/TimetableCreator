@@ -1,6 +1,5 @@
-package org.example.timetable.geneticAlg.implementation;
+package org.example.timetable.geneticAlg.fitness;
 
-import org.example.timetable.geneticAlg.FitnessCalculator;
 import org.example.timetable.model.Gene;
 import org.example.timetable.model.Individual;
 import org.example.timetable.model.Timeslot;

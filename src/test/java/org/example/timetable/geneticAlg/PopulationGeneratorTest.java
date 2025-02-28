@@ -1,5 +1,6 @@
 package org.example.timetable.geneticAlg;
 
+import org.example.timetable.geneticAlg.generators.PopulationGenerator;
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.Generation;
 import org.example.timetable.service.InputReaderService;
