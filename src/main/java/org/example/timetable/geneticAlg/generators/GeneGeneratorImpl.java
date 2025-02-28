@@ -1,9 +1,8 @@
-package org.example.timetable.geneticAlg.implementation;
+package org.example.timetable.geneticAlg.generators;
 
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.ActivityType;
 import org.example.timetable.model.Gene;
-import org.example.timetable.geneticAlg.GeneGenerator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

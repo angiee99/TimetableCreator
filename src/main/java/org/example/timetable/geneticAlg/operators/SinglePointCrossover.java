@@ -1,7 +1,5 @@
-package org.example.timetable.geneticAlg.implementation;
+package org.example.timetable.geneticAlg.operators;
 
-import org.example.timetable.geneticAlg.Crossover;
-import org.example.timetable.geneticAlg.Selection;
 import org.example.timetable.model.Individual;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -1,20 +1,24 @@
-package org.example.timetable.geneticAlg.implementation;
+package org.example.timetable.geneticAlg.fitness;
 
-import org.example.timetable.geneticAlg.FitnessCalculator;
 import org.example.timetable.model.Gene;
 import org.example.timetable.model.Individual;
 import org.example.timetable.model.Timeslot;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- *  Calculates fitness as the total number of overlapping activities
- */
+import static java.time.temporal.ChronoUnit.MINUTES;
+
 @Service
-public class FitnessCalculatorOverlapsImpl implements FitnessCalculator {
+public class FitnessCalculatorCombined implements FitnessCalculator {
+    @Value("${ga.fitness.weights.overlap}")
+    private int overlapWeight;
+
+    @Value("${ga.fitness.weights.breaks}")
+    private int breakWeight;
     @Override
     public int fitness(Individual individual) {
         int fitness = 0;
@@ -27,11 +31,27 @@ public class FitnessCalculatorOverlapsImpl implements FitnessCalculator {
             List<Gene> activitiesByDaySorted = activitiesByDay.stream().sorted
                     (Comparator.comparing(o -> o.getActivity().getTimeslot().getStart())).toList();
 
+            // Add overlaps
             int overlapsCount = countOverlaps(activitiesByDaySorted);
-            fitness = fitness + overlapsCount;
+            fitness = fitness + overlapsCount * overlapWeight;
+
+            // Add breaks
+            int breaksLength = countBreaks(activitiesByDaySorted);
+            fitness = fitness + breaksLength * breakWeight;
         }
         individual.setFitness(fitness);
         return fitness;
+    }
+
+    private int countBreaks(List<Gene> activitiesByDaySorted) {
+        // sum up the duration of all activities in a day
+        long sum = activitiesByDaySorted.stream().mapToLong(a -> a.getActivity().getDuration()).sum();
+
+        // get the timespan (last end - first start)
+        long timespan =  MINUTES.between(activitiesByDaySorted.get(0).getActivity().getTimeslot().getStart(),
+                activitiesByDaySorted.get(activitiesByDaySorted.size()-1).getActivity().getTimeslot().getEnd());
+
+        return Math.round((timespan - sum) / 60f); // divide by 60 to return the hours
     }
 
     private int countOverlaps(List<Gene> activities) {
@@ -53,4 +73,5 @@ public class FitnessCalculatorOverlapsImpl implements FitnessCalculator {
                                         .equals(DayOfWeek.of(i)))
                 .toList();
     }
+
 }
