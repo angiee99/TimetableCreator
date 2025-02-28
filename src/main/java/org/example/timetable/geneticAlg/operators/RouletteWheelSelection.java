@@ -8,10 +8,6 @@ import java.util.Random;
 
 @Service
 public class RouletteWheelSelection implements Selection{
-    /**
-     * @param population selecting from this population
-     * @return 1 selected individual right for the crossover
-     */
     @Override
     public Individual select(List<Individual> population) {
         int epsilon = 1;
