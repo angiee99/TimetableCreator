@@ -2,11 +2,10 @@ package org.example.timetable.geneticAlg.fitness;
 
 import org.example.timetable.model.Gene;
 import org.example.timetable.model.Individual;
-import org.example.timetable.model.Timeslot;
+import org.example.timetable.utils.Utils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.util.Comparator;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class FitnessCalculatorCombined implements FitnessCalculator {
         int fitness = 0;
         for(int i =1; i <= 7; i++ ) {
             // get the activities at that day
-            List<Gene> activitiesByDay = getActivitiesByDay(individual, i);
+            List<Gene> activitiesByDay = Utils.getActivitiesByDay(individual, i);
             if (activitiesByDay.isEmpty()) continue;
 
             // sort by time
@@ -32,7 +31,7 @@ public class FitnessCalculatorCombined implements FitnessCalculator {
                     (Comparator.comparing(o -> o.getActivity().getTimeslot().getStart())).toList();
 
             // Add overlaps
-            int overlapsCount = countOverlaps(activitiesByDaySorted);
+            int overlapsCount = Utils.countOverlaps(activitiesByDaySorted);
             fitness = fitness + overlapsCount * overlapWeight;
 
             // Add breaks
@@ -48,30 +47,10 @@ public class FitnessCalculatorCombined implements FitnessCalculator {
         long sum = activitiesByDaySorted.stream().mapToLong(a -> a.getActivity().getDuration()).sum();
 
         // get the timespan (last end - first start)
-        long timespan =  MINUTES.between(activitiesByDaySorted.get(0).getActivity().getTimeslot().getStart(),
-                activitiesByDaySorted.get(activitiesByDaySorted.size()-1).getActivity().getTimeslot().getEnd());
+        long timespan =  MINUTES.between(
+                activitiesByDaySorted.getFirst().getActivity().getTimeslot().getStart(),
+                activitiesByDaySorted.getLast().getActivity().getTimeslot().getEnd());
 
         return Math.round((timespan - sum) / 60f); // divide by 60 to return the hours
     }
-
-    private int countOverlaps(List<Gene> activities) {
-        int overlapCount = 0;
-        for (int j = 0; j < activities.size() - 1; j++) {
-            Timeslot a = activities.get(j).getActivity().getTimeslot();
-            Timeslot b = activities.get(j + 1).getActivity().getTimeslot();
-            if (a.getEnd().isAfter(b.getStart())) {
-                overlapCount++; // add an overlap
-            }
-        }
-        return overlapCount;
-    }
-
-    private List<Gene> getActivitiesByDay(Individual individual, int i) {
-        return individual.getGenes().stream().filter(
-                        gene ->
-                                gene.getActivity().getTimeslot().getDay()
-                                        .equals(DayOfWeek.of(i)))
-                .toList();
-    }
-
 }

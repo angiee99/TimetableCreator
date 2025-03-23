@@ -56,36 +56,31 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
     @Override
     public List<Activity> createSchedule(List<Activity> activities) throws NoSolutionFoundException{
         Generation generation = populationGenerator.generate(activities, POPULATION_SIZE);
-        for (int i = 0; i < GENERATION_COUNT; i++) {
-
-           // count the fitness for all individuals -> getBestIndividual will also do that (think about it)
-            for(Individual individual : generation.getPopulation()){
-                fitnessCalculator.fitness(individual);
-            }
-
-            // get the best individual fitness value
-            // if fitness target is met -> stop
-            if(generation.getBestIndividual(fitnessCalculator).getFitness() <= FITNESS_TARGET){
-                break;
-            }
-
-            // crossover with selecting parents based on integrated selection method
-            List<Individual> populationWithOffsprings = crossover.doCrossover(
-                    generation.getPopulation(), POPULATION_SIZE);
-            // mutation
-            List<Individual> populationWithMutations = mutation.mutate(populationWithOffsprings, activities);
-
-            generation = new Generation(new ArrayList<>(populationWithMutations)); // update current generation
-        }
-
-        // return if generation is empty
-        if(generation.getPopulation().isEmpty()){
-            System.out.println("No solution was found, the last generation is empty.");
-            throw new NoSolutionFoundException("No solution was found, the last generation is empty");
-        }
-
-        Individual bestIndividual;
         try{
+            for (int i = 0; i < GENERATION_COUNT; i++) {
+                // count the fitness for all individuals -> getBestIndividual will also do that (think about it)
+                for(Individual individual : generation.getPopulation()){
+                    fitnessCalculator.fitness(individual);
+                }
+
+                // get the best individual fitness value, if fitness target is met -> stop
+                if(generation.getBestIndividual(fitnessCalculator).getFitness() <= FITNESS_TARGET){
+                    break;
+                }
+                // crossover with selecting parents based on integrated selection method
+                List<Individual> populationWithOffsprings = crossover.doCrossover(
+                        generation.getPopulation());
+                // mutation
+                List<Individual> populationWithMutations = mutation.mutate(populationWithOffsprings, activities);
+                generation = new Generation(new ArrayList<>(populationWithMutations)); // update current generation
+            }
+
+            // return if generation is empty
+            if(generation.getPopulation().isEmpty()){
+                throw new NoSolutionFoundException("No solution was found, the last generation is empty");
+            }
+
+            Individual bestIndividual;
             bestIndividual = generation.getBestIndividual(fitnessCalculator);
             if(bestIndividual.getFitness() > FITNESS_THRESHOLD) {
                 throw new NoFitIndividualException("Final generation has no schedule without overlaps");

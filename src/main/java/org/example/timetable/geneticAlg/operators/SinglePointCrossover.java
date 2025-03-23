@@ -1,6 +1,7 @@
 package org.example.timetable.geneticAlg.operators;
 
 import org.example.timetable.model.Individual;
+import org.example.timetable.model.exception.NoFitIndividualException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,14 +25,14 @@ public class SinglePointCrossover implements Crossover {
     }
 
     @Override
-    public List<Individual> doCrossover(List<Individual> parentPopulation, int populationSize) {
-        List<Individual> newPopulation = new ArrayList<>();
+    public List<Individual> doCrossover(List<Individual> parentPopulation) throws NoFitIndividualException {
+        int populationSize = parentPopulation.size();
         int crossoverNumber = (int) (crossoverRate * populationSize); // offsprings from crossover
         int eliteNumber = populationSize - crossoverNumber; // elite individuals that will be copied to new population
 
-        // Step 1: Select `eliteNumber` individuals for direct copy (elite selection)
+        // Select elite individuals for direct copy (elite selection)
         List<Individual> eliteIndividuals = selectElite(parentPopulation, eliteNumber);
-        newPopulation.addAll(eliteIndividuals);
+        List<Individual> newPopulation = new ArrayList<>(eliteIndividuals);
 
         for (int i = 0; i < crossoverNumber; i+=2) {
             // Select 2 parents from parentPopulation

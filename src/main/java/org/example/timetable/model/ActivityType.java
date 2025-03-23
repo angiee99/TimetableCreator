@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class ActivityType {
     String subject;
-    int type; // 0 - lecture, 1 - practice -> could be enum if needed
+    int type; // 0 - lecture, 1 - practice
 
     @Override
     public boolean equals(Object o) {

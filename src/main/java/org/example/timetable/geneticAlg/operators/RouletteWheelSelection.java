@@ -16,12 +16,10 @@ public class RouletteWheelSelection implements Selection{
                 .mapToDouble(f -> 1.0 / (f + epsilon)) // mapping to probabilities of being selected
                 .reduce(0, Double::sum);
 
-        // Generate a random number between 0 and total fitness
-        Random random = new Random();
-
+        Random random = new Random();// generate a random number between 0 and total fitness
         double randomValue = random.nextDouble() * totalWeight;
 
-        // Select an individual based on the inverted fitness proportion
+        // Select based on inverted fitness proportion
         double runningSum = 0.0;
         for (Individual individual : population) {
             double weight = 1.0 / (individual.getFitness() + epsilon);
@@ -30,6 +28,6 @@ public class RouletteWheelSelection implements Selection{
                 return individual;
             }
         }
-        return new Individual(); // Shouldn't reach here if totalWeight is calculated correctly
+        return new Individual(); // Shouldnt reach here if totalWeight is calculated correctly
     }
 }

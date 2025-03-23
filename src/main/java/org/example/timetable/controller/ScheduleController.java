@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,11 +24,11 @@ import java.util.Map;
 @CrossOrigin
 @RequestMapping("/schedule")
 public class ScheduleController {
-    private GeneticAlgStarterService geneticAlgStarterService;
-    private InputReaderService readerService;
-    private InputFiltrationService inputFiltrationService;
-    private OutputService outputService;
-    private ConfigurationLoader configurationLoader;
+    private final GeneticAlgStarterService geneticAlgStarterService;
+    private final InputReaderService readerService;
+    private final InputFiltrationService inputFiltrationService;
+    private final OutputService outputService;
+    private final ConfigurationLoader configurationLoader;
     @Autowired
     public ScheduleController(GeneticAlgStarterService geneticAlgStarterService,
                               InputReaderService readerService,
@@ -45,7 +44,7 @@ public class ScheduleController {
 
     @PostMapping()
     public ResponseEntity<String> uploadCSV(@RequestParam("file") MultipartFile file) {
-        String jsonOutput = "";
+        String jsonOutput;
         try{
             // Check if the file is empty
             if (file.isEmpty()) {
@@ -54,8 +53,7 @@ public class ScheduleController {
             }
 
             // Convert MultipartFile to InputStream to read CSV contents
-            InputStream inputStream = file.getInputStream();
-            ArrayList<Activity> list = (ArrayList<Activity>) readerService.read(inputStream);
+            ArrayList<Activity> list = (ArrayList<Activity>) readerService.read(file.getInputStream());
 
             // filter the activities
             List<Activity> filteredList = inputFiltrationService.filtrateByAvailability(list);
@@ -76,9 +74,9 @@ public class ScheduleController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error reading the uploaded file");
         }
-
         return ResponseEntity.ok(jsonOutput);
     }
+
     @GetMapping()
     public ResponseEntity<Map<String, String> > getConfigs(){
         Map<String, String> configs = configurationLoader.loadAll();
