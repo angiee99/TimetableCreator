@@ -5,5 +5,5 @@ import org.example.timetable.model.Activity;
 import java.util.List;
 
 public interface OutputService {
-    Object formatOutput(List<Activity> schedule);
+    Object formatOutput(List<Activity> schedule) throws IOServiceException;
 }

@@ -25,7 +25,7 @@ public class Generation {
      * @param fitnessCalculator the implementation of {@link FitnessCalculator} to be used
      * @return the individual with the lowest non-negative fitness value
      */
-    public Individual getBestIndividual(FitnessCalculator fitnessCalculator){
+    public Individual getBestIndividual(FitnessCalculator fitnessCalculator) throws NoFitIndividualException {
         for(Individual individual : population){
             fitnessCalculator.fitness(individual);
         }
@@ -37,6 +37,6 @@ public class Generation {
         if(sortedByFitness.isEmpty()){
             throw new NoFitIndividualException("No individual with valid fitness found");
         }
-        return sortedByFitness.get(0);
+        return sortedByFitness.getFirst();
     }
 }

@@ -6,6 +6,6 @@ import java.io.InputStream;
 import java.util.List;
 
 public interface InputReaderService {
-    List<Activity> read(String path);
-    List<Activity> read(InputStream stream);
+    List<Activity> read(String path) throws IOServiceException;
+    List<Activity> read(InputStream stream) throws IOServiceException;
 }

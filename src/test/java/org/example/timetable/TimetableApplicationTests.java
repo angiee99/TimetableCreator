@@ -2,9 +2,9 @@ package org.example.timetable;
 
 import org.example.timetable.geneticAlg.GeneticAlgStarterService;
 import org.example.timetable.model.Activity;
-import org.example.timetable.model.Gene;
 import org.example.timetable.model.Timeslot;
 import org.example.timetable.model.exception.NoSolutionFoundException;
+import org.example.timetable.service.IOServiceException;
 import org.example.timetable.service.InputFiltrationService;
 import org.example.timetable.service.InputReaderService;
 import org.example.timetable.service.OutputService;
@@ -36,7 +36,7 @@ class TimetableApplicationTests {
     @Autowired
     InputFiltrationService inputFiltrationService;
     @Test
-    void fullSuccessScenario(){
+    void fullSuccessScenario() throws IOServiceException {
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
                 .read("src/test/resources/DemoSixthSemester.csv");
         assertFalse(list.isEmpty());
@@ -60,7 +60,7 @@ class TimetableApplicationTests {
         }
     }
     @Test
-    void fullNoSolutionScenario(){
+    void fullNoSolutionScenario() throws IOServiceException {
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
                 .read("src/test/resources/DemoInputNoSolution.csv");
         assertFalse(list.isEmpty());
@@ -70,7 +70,7 @@ class TimetableApplicationTests {
         assertThrows(NoSolutionFoundException.class, () -> geneticAlgStarterService.createSchedule(filteredList));
     }
     @Test
-    void biggerInputFileTest(){
+    void biggerInputFileTest() throws IOServiceException {
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
                 .read("src/test/resources/BiggerInput.csv");
         assertFalse(list.isEmpty());
@@ -105,7 +105,6 @@ class TimetableApplicationTests {
                     return true; // there is an overlap
                 }
             }
-
         }
         return false;
     }

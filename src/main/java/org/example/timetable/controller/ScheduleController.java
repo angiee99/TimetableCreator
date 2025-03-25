@@ -4,6 +4,7 @@ import org.example.timetable.geneticAlg.GeneticAlgStarterService;
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.exception.NoSolutionFoundException;
 import org.example.timetable.service.InputFiltrationService;
+import org.example.timetable.service.IOServiceException;
 import org.example.timetable.service.InputReaderService;
 import org.example.timetable.service.OutputService;
 import org.example.timetable.utils.ConfigurationLoader;
@@ -51,7 +52,6 @@ public class ScheduleController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body("The uploaded file is empty");
             }
-
             // Convert MultipartFile to InputStream to read CSV contents
             ArrayList<Activity> list = (ArrayList<Activity>) readerService.read(file.getInputStream());
 
@@ -62,7 +62,6 @@ public class ScheduleController {
 
             // create output in JSON file
             jsonOutput = (String) outputService.formatOutput(schedule);
-
         } catch(NoSolutionFoundException e){
             HttpHeaders headers = new HttpHeaders();
             headers.add("Access-Control-Expose-Headers", "message");
@@ -70,9 +69,9 @@ public class ScheduleController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
                     .headers(headers)
                     .body("");
-        } catch (IOException e) {
+        } catch (IOException | IOServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error reading the uploaded file");
+                    .body(e.getMessage());
         }
         return ResponseEntity.ok(jsonOutput);
     }

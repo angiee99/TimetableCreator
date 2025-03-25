@@ -1,6 +1,7 @@
 package org.example.timetable.geneticAlg;
 
 import org.example.timetable.model.Activity;
+import org.example.timetable.service.IOServiceException;
 import org.example.timetable.service.InputFiltrationService;
 import org.example.timetable.service.InputReaderService;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ public class GeneticAlgStarterServiceTest {
     @Autowired
     InputFiltrationService inputFiltrationService;
     @Test
-    void test(){
+    void test() throws IOServiceException {
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
                 .read("src/test/resources/DemoInputSchedule.csv");
 

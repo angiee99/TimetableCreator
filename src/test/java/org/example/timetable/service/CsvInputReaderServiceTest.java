@@ -16,11 +16,11 @@ public class CsvInputReaderServiceTest {
     @Autowired
     InputReaderService readerService;
     @Test
-    void test(){
+    void test() throws IOServiceException {
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
                 .read("src/test/resources/DemoInputSchedule.csv");
 
         assertEquals(13, list.size());
-        assertFalse(list.get(0).getRoom().isEmpty());
+        assertFalse(list.getFirst().getRoom().isEmpty());
     }
 }
