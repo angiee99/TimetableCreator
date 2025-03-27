@@ -77,7 +77,7 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
 
             // return if generation is empty
             if(generation.getPopulation().isEmpty()){
-                throw new NoSolutionFoundException("No solution was found, the last generation is empty");
+                throw new NoSolutionFoundException("The last generation is empty");
             }
 
             Individual bestIndividual;
@@ -88,9 +88,8 @@ public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
             List<Activity> result = bestIndividual.getGenes().stream().map(Gene::getActivity).toList();
             return result;
         } catch (NoFitIndividualException e){
-            System.out.println("No solution was found, exception:" + e.getLocalizedMessage());
             throw new NoSolutionFoundException(
-                    "No solution was found, exception:" + e.getLocalizedMessage(), e);
+                    "No solution was found, exception: " + e.getLocalizedMessage(), e);
         }
     }
 }
