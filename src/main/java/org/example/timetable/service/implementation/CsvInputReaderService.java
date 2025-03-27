@@ -7,6 +7,7 @@ import org.example.timetable.model.ActivityType;
 import org.example.timetable.model.Timeslot;
 import org.example.timetable.service.IOServiceException;
 import org.example.timetable.service.InputReaderService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -20,7 +21,8 @@ import java.util.NoSuchElementException;
 
 @Service
 public class CsvInputReaderService implements InputReaderService {
-    private final int countOfFields = 7; // the expected count of fields in csv
+    @Value("${ga.input.csv.fields-count}")
+    private final int countOfFields = 7;
     @Override
     public List<Activity> read(String path) throws IOServiceException {
         List<Activity> activities;
