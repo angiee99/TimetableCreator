@@ -1,4 +1,4 @@
-package org.example.timetable.service;
+package org.example.timetable.ioservice;
 
 import org.example.timetable.model.Activity;
 

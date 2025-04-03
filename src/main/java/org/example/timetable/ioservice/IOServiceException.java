@@ -1,4 +1,4 @@
-package org.example.timetable.service;
+package org.example.timetable.ioservice;
 
 public class IOServiceException extends Exception {
     public IOServiceException(String message) {

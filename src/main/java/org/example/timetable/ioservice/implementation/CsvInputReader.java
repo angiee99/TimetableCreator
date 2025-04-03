@@ -1,12 +1,12 @@
-package org.example.timetable.service.implementation;
+package org.example.timetable.ioservice.implementation;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.ActivityType;
 import org.example.timetable.model.Timeslot;
-import org.example.timetable.service.IOServiceException;
-import org.example.timetable.service.InputReaderService;
+import org.example.timetable.ioservice.IOServiceException;
+import org.example.timetable.ioservice.InputReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-public class CsvInputReaderService implements InputReaderService {
+public class CsvInputReader implements InputReader {
     @Value("${ga.input.csv.fields-count}")
     private final int countOfFields = 7;
     @Override

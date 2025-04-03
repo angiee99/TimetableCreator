@@ -4,10 +4,10 @@ import org.example.timetable.geneticAlg.ScheduleGenerationRunner;
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.Timeslot;
 import org.example.timetable.model.exception.NoSolutionFoundException;
-import org.example.timetable.service.IOServiceException;
-import org.example.timetable.service.InputFiltrationService;
-import org.example.timetable.service.InputReaderService;
-import org.example.timetable.service.OutputService;
+import org.example.timetable.ioservice.IOServiceException;
+import org.example.timetable.ioservice.InputFiltration;
+import org.example.timetable.ioservice.InputReader;
+import org.example.timetable.ioservice.OutputService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,20 +28,20 @@ class TimetableApplicationTests {
     ScheduleGenerationRunner scheduleGenerationRunner;
 
     @Autowired
-    InputReaderService readerService;
+    InputReader readerService;
 
     @Autowired
     OutputService outputService;
 
     @Autowired
-    InputFiltrationService inputFiltrationService;
+    InputFiltration inputFiltration;
     @Test
     void fullSuccessScenario() throws IOServiceException {
         ArrayList<Activity> list = (ArrayList<Activity>) readerService
                 .read("src/test/resources/DemoSixthSemester.csv");
         assertFalse(list.isEmpty());
         // remove not available activities
-        List<Activity> filteredList = inputFiltrationService.filtrateByAvailability(list);
+        List<Activity> filteredList = inputFiltration.filtrateByAvailability(list);
 
         List<Activity> schedule = scheduleGenerationRunner.createSchedule(filteredList);
         assertFalse(schedule.isEmpty());
@@ -65,7 +65,7 @@ class TimetableApplicationTests {
                 .read("src/test/resources/DemoInputNoSolution.csv");
         assertFalse(list.isEmpty());
         // remove not available activities
-        List<Activity> filteredList = inputFiltrationService.filtrateByAvailability(list);
+        List<Activity> filteredList = inputFiltration.filtrateByAvailability(list);
 
         assertThrows(NoSolutionFoundException.class, () -> scheduleGenerationRunner.createSchedule(filteredList));
     }
@@ -75,7 +75,7 @@ class TimetableApplicationTests {
                 .read("src/test/resources/BiggerInput.csv");
         assertFalse(list.isEmpty());
         // remove not available activities
-        List<Activity> filteredList = inputFiltrationService.filtrateByAvailability(list);
+        List<Activity> filteredList = inputFiltration.filtrateByAvailability(list);
 
         List<Activity> schedule = scheduleGenerationRunner.createSchedule(filteredList);
         assertFalse(schedule.isEmpty());

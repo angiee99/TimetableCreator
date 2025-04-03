@@ -3,8 +3,8 @@ package org.example.timetable.geneticAlg;
 import org.example.timetable.geneticAlg.generators.PopulationGenerator;
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.Generation;
-import org.example.timetable.service.IOServiceException;
-import org.example.timetable.service.InputReaderService;
+import org.example.timetable.ioservice.IOServiceException;
+import org.example.timetable.ioservice.InputReader;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +20,7 @@ public class PopulationGeneratorTest {
     PopulationGenerator generationService;
 
     @Autowired
-    InputReaderService readerService;
+    InputReader readerService;
 
     @Test
     void test() throws IOServiceException {

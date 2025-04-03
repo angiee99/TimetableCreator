@@ -1,4 +1,4 @@
-package org.example.timetable.service;
+package org.example.timetable.ioservice;
 
 import org.example.timetable.model.Activity;
 import org.junit.jupiter.api.Test;
@@ -11,10 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
-public class CsvInputReaderServiceTest {
+public class CsvInputReaderTest {
 
     @Autowired
-    InputReaderService readerService;
+    InputReader readerService;
     @Test
     void test() throws IOServiceException {
         ArrayList<Activity> list = (ArrayList<Activity>) readerService

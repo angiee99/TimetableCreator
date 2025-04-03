@@ -3,10 +3,10 @@ package org.example.timetable.controller;
 import org.example.timetable.geneticAlg.ScheduleGenerationRunner;
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.exception.NoSolutionFoundException;
-import org.example.timetable.service.InputFiltrationService;
-import org.example.timetable.service.IOServiceException;
-import org.example.timetable.service.InputReaderService;
-import org.example.timetable.service.OutputService;
+import org.example.timetable.ioservice.InputFiltration;
+import org.example.timetable.ioservice.IOServiceException;
+import org.example.timetable.ioservice.InputReader;
+import org.example.timetable.ioservice.OutputService;
 import org.example.timetable.utils.ConfigurationLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -26,25 +26,25 @@ import java.util.Map;
 @RequestMapping("/schedule")
 public class ScheduleController {
     private final ScheduleGenerationRunner scheduleGenerationRunner;
-    private final InputReaderService readerService;
-    private final InputFiltrationService inputFiltrationService;
+    private final InputReader readerService;
+    private final InputFiltration inputFiltration;
     private final OutputService outputService;
     private final ConfigurationLoader configurationLoader;
     @Autowired
     public ScheduleController(ScheduleGenerationRunner scheduleGenerationRunner,
-                              InputReaderService readerService,
-                              InputFiltrationService inputFiltrationService,
+                              InputReader readerService,
+                              InputFiltration inputFiltration,
                               OutputService outputService,
                               ConfigurationLoader configurationLoader) {
         this.scheduleGenerationRunner = scheduleGenerationRunner;
         this.readerService = readerService;
-        this.inputFiltrationService = inputFiltrationService;
+        this.inputFiltration = inputFiltration;
         this.outputService = outputService;
         this.configurationLoader = configurationLoader;
     }
 
     @PostMapping()
-    public ResponseEntity<String> uploadCSV(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> generateSchedule(@RequestParam("file") MultipartFile file) {
         String jsonOutput;
         try{
             // Check if the file is empty
@@ -56,7 +56,7 @@ public class ScheduleController {
             ArrayList<Activity> list = (ArrayList<Activity>) readerService.read(file.getInputStream());
 
             // filter the activities
-            List<Activity> filteredList = inputFiltrationService.filtrateByAvailability(list);
+            List<Activity> filteredList = inputFiltration.filtrateByAvailability(list);
             // create the schedule
             List<Activity> schedule = scheduleGenerationRunner.createSchedule(filteredList);
 
