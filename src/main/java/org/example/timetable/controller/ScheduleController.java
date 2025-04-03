@@ -1,6 +1,6 @@
 package org.example.timetable.controller;
 
-import org.example.timetable.geneticAlg.GeneticAlgStarterService;
+import org.example.timetable.geneticAlg.ScheduleGenerationRunner;
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.exception.NoSolutionFoundException;
 import org.example.timetable.service.InputFiltrationService;
@@ -25,18 +25,18 @@ import java.util.Map;
 @CrossOrigin
 @RequestMapping("/schedule")
 public class ScheduleController {
-    private final GeneticAlgStarterService geneticAlgStarterService;
+    private final ScheduleGenerationRunner scheduleGenerationRunner;
     private final InputReaderService readerService;
     private final InputFiltrationService inputFiltrationService;
     private final OutputService outputService;
     private final ConfigurationLoader configurationLoader;
     @Autowired
-    public ScheduleController(GeneticAlgStarterService geneticAlgStarterService,
+    public ScheduleController(ScheduleGenerationRunner scheduleGenerationRunner,
                               InputReaderService readerService,
                               InputFiltrationService inputFiltrationService,
                               OutputService outputService,
                               ConfigurationLoader configurationLoader) {
-        this.geneticAlgStarterService = geneticAlgStarterService;
+        this.scheduleGenerationRunner = scheduleGenerationRunner;
         this.readerService = readerService;
         this.inputFiltrationService = inputFiltrationService;
         this.outputService = outputService;
@@ -58,7 +58,7 @@ public class ScheduleController {
             // filter the activities
             List<Activity> filteredList = inputFiltrationService.filtrateByAvailability(list);
             // create the schedule
-            List<Activity> schedule = geneticAlgStarterService.createSchedule(filteredList);
+            List<Activity> schedule = scheduleGenerationRunner.createSchedule(filteredList);
 
             // create output in JSON file
             jsonOutput = (String) outputService.formatOutput(schedule);

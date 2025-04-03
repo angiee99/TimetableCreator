@@ -48,11 +48,7 @@ public class FitnessCalculatorBreakSum implements FitnessCalculator {
             long timespan =  MINUTES.between(activitiesByDaySorted.getFirst().getActivity().getTimeslot().getStart(),
                     activitiesByDaySorted.getLast().getActivity().getTimeslot().getEnd());
 
-            int fitnessIndividual = (int) (timespan - sum);
-            if(fitnessIndividual < 0) { // this individual has the overlap because NO BREAKS were detected
-                fitness = fitnessIndividual;
-                break;
-            }
+            int fitnessIndividual = (int) (timespan - sum) / 60; // to hours
             fitness += fitnessIndividual;
         }
 

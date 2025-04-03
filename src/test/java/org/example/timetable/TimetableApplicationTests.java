@@ -1,6 +1,6 @@
 package org.example.timetable;
 
-import org.example.timetable.geneticAlg.GeneticAlgStarterService;
+import org.example.timetable.geneticAlg.ScheduleGenerationRunner;
 import org.example.timetable.model.Activity;
 import org.example.timetable.model.Timeslot;
 import org.example.timetable.model.exception.NoSolutionFoundException;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 class TimetableApplicationTests {
     @Autowired
-    GeneticAlgStarterService geneticAlgStarterService;
+    ScheduleGenerationRunner scheduleGenerationRunner;
 
     @Autowired
     InputReaderService readerService;
@@ -43,7 +43,7 @@ class TimetableApplicationTests {
         // remove not available activities
         List<Activity> filteredList = inputFiltrationService.filtrateByAvailability(list);
 
-        List<Activity> schedule = geneticAlgStarterService.createSchedule(filteredList);
+        List<Activity> schedule = scheduleGenerationRunner.createSchedule(filteredList);
         assertFalse(schedule.isEmpty());
 
         // check if there are no overlaps
@@ -67,7 +67,7 @@ class TimetableApplicationTests {
         // remove not available activities
         List<Activity> filteredList = inputFiltrationService.filtrateByAvailability(list);
 
-        assertThrows(NoSolutionFoundException.class, () -> geneticAlgStarterService.createSchedule(filteredList));
+        assertThrows(NoSolutionFoundException.class, () -> scheduleGenerationRunner.createSchedule(filteredList));
     }
     @Test
     void biggerInputFileTest() throws IOServiceException {
@@ -77,7 +77,7 @@ class TimetableApplicationTests {
         // remove not available activities
         List<Activity> filteredList = inputFiltrationService.filtrateByAvailability(list);
 
-        List<Activity> schedule = geneticAlgStarterService.createSchedule(filteredList);
+        List<Activity> schedule = scheduleGenerationRunner.createSchedule(filteredList);
         assertFalse(schedule.isEmpty());
 
         // check if there are no overlaps

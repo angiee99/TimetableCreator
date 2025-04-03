@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GeneticAlgStarterServiceImpl implements GeneticAlgStarterService {
+public class ScheduleGenerationRunnerImpl implements ScheduleGenerationRunner {
     private PopulationGenerator populationGenerator;
     private FitnessCalculator fitnessCalculator;
     private Crossover crossover;

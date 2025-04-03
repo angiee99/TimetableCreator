@@ -4,6 +4,6 @@ import org.example.timetable.model.Activity;
 
 import java.util.List;
 
-public interface GeneticAlgStarterService {
+public interface ScheduleGenerationRunner {
     List<Activity> createSchedule(List<Activity> activities);
 }

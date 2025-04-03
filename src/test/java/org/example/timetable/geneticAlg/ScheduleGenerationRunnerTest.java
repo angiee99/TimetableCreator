@@ -14,10 +14,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
-public class GeneticAlgStarterServiceTest {
+public class ScheduleGenerationRunnerTest {
 
     @Autowired
-    GeneticAlgStarterService geneticAlgStarterService;
+    ScheduleGenerationRunner scheduleGenerationRunner;
     @Autowired
     InputReaderService readerService;
     @Autowired
@@ -29,7 +29,7 @@ public class GeneticAlgStarterServiceTest {
 
         List<Activity> filtered = inputFiltrationService.filtrateByAvailability(list);
 
-        List<Activity> result = geneticAlgStarterService.createSchedule(filtered);
+        List<Activity> result = scheduleGenerationRunner.createSchedule(filtered);
         assertFalse(result.isEmpty());
     }
 }
