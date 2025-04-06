@@ -35,22 +35,30 @@ public class FitnessCalculatorCombined implements FitnessCalculator {
             fitness = fitness + overlapsCount * overlapWeight;
 
             // Add breaks
-            int breaksLength = countBreaks(activitiesByDaySorted);
+            int breaksLength = (int) countTotalBreakMinutes(activitiesByDaySorted);
             fitness = fitness + breaksLength * breakWeight;
         }
         individual.setFitness(fitness);
         return fitness;
     }
 
-    private int countBreaks(List<Gene> activitiesByDaySorted) {
-        // sum up the duration of all activities in a day
-        long sum = activitiesByDaySorted.stream().mapToLong(a -> a.getActivity().getDuration()).sum();
+    private long countTotalBreakMinutes(List<Gene> activitiesSortedByStart) {
+        if (activitiesSortedByStart.size() < 2) {
+            return 0;
+        }
 
-        // get the timespan (last end - first start)
-        long timespan =  MINUTES.between(
-                activitiesByDaySorted.getFirst().getActivity().getTimeslot().getStart(),
-                activitiesByDaySorted.getLast().getActivity().getTimeslot().getEnd());
+        long totalBreakMinutes = 0;
 
-        return Math.round((timespan - sum) / 60f); // divide by 60 to return the hours
+        for (int i = 1; i < activitiesSortedByStart.size(); i++) {
+            var previousEnd = activitiesSortedByStart.get(i - 1).getActivity().getTimeslot().getEnd();
+            var currentStart = activitiesSortedByStart.get(i).getActivity().getTimeslot().getStart();
+
+            long gap = MINUTES.between(previousEnd, currentStart);
+            if (gap > 0) {
+                totalBreakMinutes += gap;
+            }
+        }
+
+        return (long) Math.floor(totalBreakMinutes / 60d);
     }
 }
