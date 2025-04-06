@@ -18,7 +18,7 @@ public class RandomResettingMutation implements Mutation {
     @Override
     public List<Individual> mutate(List<Individual> population, List<Activity> activities) {
         List<Individual> mutatedPopulation = new ArrayList<>(population);
-        int mutationNumber = (int) (mutationRate * population.size()); // number of individuals to mutate
+        int mutationNumber = (int) Math.round(mutationRate * population.size()); // number of individuals to mutate
         Set<Integer> mutationIndices = new HashSet<>();
         // Select unique random indices of individuals for mutation
         while (mutationIndices.size() < mutationNumber) {
